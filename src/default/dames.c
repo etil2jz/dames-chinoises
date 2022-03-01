@@ -5,19 +5,19 @@
 #include <string.h>
 
 // On déclare les structures nécessaires au jeu
-typedef struct pions {
-	char nom; // de 0 à 9 pions joueur, le 10 c'est le vide, le 11 c'est indisponible
+typedef struct pion {
+    char nom; // de 0 à 9 pions joueur, le 10 c'est le vide, le 11 c'est indisponible
     int x, y, ekip; // coordonnées et équipe
-}pions;
+}pion;
 
 typedef struct joueur {
-	//struct pion pions[9];
-	char nom[256];
-	int numero; // de 1 à 6
+    //struct pion pions[9];
+    char nom[256];
+    int numero; // de 1 à 6
 }joueur;
 
 // On initialise les pions pour le début de partie
-void initPions(pions TousLesPions[]) {
+void initPions(pion TousLesPions[]) {
     TousLesPions[0].ekip = 0;
     TousLesPions[0].nom = ' ';
 
@@ -32,7 +32,7 @@ void initPions(pions TousLesPions[]) {
 
 // On initialise le plateau pour le début de partie
 // ~~(un bazar puisqu'on init case par case, quand bien même on emploie des boucles)~~
-void initPlateau(char plateau[][14], pions TousLesPions[]) {
+void initPlateau(char plateau[][14], pion TousLesPions[]) {
     int limiteplus = 7, limitemoins = 7;
     for (int ligne = 0; ligne < 17; ligne++) {
         // On remplit tout le plateau de vide
@@ -92,8 +92,8 @@ void affichagePlateau(char plateau[][14]) {
 }
 
 int main() {
-	char plateau[17][14];
-    pions TousLesPions[65];
+    char plateau[17][14];
+    pion TousLesPions[65];
     initPions(TousLesPions);
     initPlateau(plateau, TousLesPions);
     affichagePlateau(plateau);

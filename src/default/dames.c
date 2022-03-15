@@ -1,3 +1,5 @@
+// Suppression du message chiant du compilateur sur la dépréciation
+#define _CRT_SECURE_NO_WARNINGS 
 // Les biblios
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,15 +8,20 @@
 
 // On déclare les structures nécessaires au jeu
 typedef struct pions {
-	char nom; // de 0 à 9 pions joueur, le 10 c'est le vide, le 11 c'est indisponible
+	char nom; // de 0 à 9 pions joueur
     int ligne, colonne, ekip; // coordonnées et équipe
 }pions;
 
-typedef struct joueur {
-	//struct pion pions[9];
-	char nom[256];
-	int numero; // de 1 à 6
-}joueur;
+typedef struct joueurs {
+	char nom[256]; // j'espère qu'ils auront pas un nom trop long...
+	int ekip; // de 1 à 6
+}joueurs;
+
+// On définit une couleur juste avant de printf quelque chose
+void Couleur(int couleurDuTexte, int couleurDeFond) {
+        HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
+}
 
 // On demande le nombre de joueurs et leur pseudo
 int AskJoueur() {
@@ -44,6 +51,115 @@ int AskJoueur() {
                 break;
         }
     } while (rep % 2 != 0 || rep < 2 || rep > 6);
+    return 0;
+}
+
+void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueurs j5, joueurs j6) {
+    if (NBekip == 2) {
+        // Joueur 1
+        printf("\nNom du ");
+        Couleur(2, 0);
+        printf("Joueur 1");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j1.nom, sizeof(j1.nom), stdin);
+        fgets(j1.nom, sizeof(j1.nom), stdin);
+        printf("%s", j1.nom);
+        // Joueur 2
+        printf("\nNom du ");
+        Couleur(14, 0);
+        printf("Joueur 2");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j2.nom, sizeof(j2.nom), stdin);
+        printf("%s", j2.nom);
+    }
+    if (NBekip == 4) {
+        // Joueur 1
+        printf("\nNom du ");
+        Couleur(2, 0);
+        printf("Joueur 1");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j1.nom, sizeof(j1.nom), stdin);
+        fgets(j1.nom, sizeof(j1.nom), stdin);
+        printf("%s", j1.nom);
+        // Joueur 2
+        printf("\nNom du ");
+        Couleur(14, 0);
+        printf("Joueur 2");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j2.nom, sizeof(j2.nom), stdin);
+        printf("%s", j2.nom);
+        // Joueur 3
+        printf("\nNom du ");
+        Couleur(9, 0);
+        printf("Joueur 3");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j3.nom, sizeof(j3.nom), stdin);
+        printf("%s", j3.nom);
+        // Joueur 4
+        printf("\nNom du ");
+        Couleur(12, 0);
+        printf("Joueur 4");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j4.nom, sizeof(j4.nom), stdin);
+        printf("%s", j4.nom);
+    }
+    if (NBekip == 6) {
+        // Joueur 1
+        printf("\nNom du ");
+        Couleur(2, 0);
+        printf("Joueur 1");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j1.nom, sizeof(j1.nom), stdin);
+        fgets(j1.nom, sizeof(j1.nom), stdin);
+        printf("%s", j1.nom);
+        // Joueur 2
+        printf("\nNom du ");
+        Couleur(14, 0);
+        printf("Joueur 2");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j2.nom, sizeof(j2.nom), stdin);
+        printf("%s", j2.nom);
+        // Joueur 3
+        printf("\nNom du ");
+        Couleur(9, 0);
+        printf("Joueur 3");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j3.nom, sizeof(j3.nom), stdin);
+        printf("%s", j3.nom);
+        // Joueur 4
+        printf("\nNom du ");
+        Couleur(12, 0);
+        printf("Joueur 4");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j4.nom, sizeof(j4.nom), stdin);
+        printf("%s", j4.nom);
+        // Joueur 5
+        printf("\nNom du ");
+        Couleur(6, 0);
+        printf("Joueur 5");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j5.nom, sizeof(j5.nom), stdin);
+        printf("%s", j5.nom);
+        // Joueur 6
+        printf("\nNom du ");
+        Couleur(13, 0);
+        printf("Joueur 6");
+        Couleur(7, 0);
+        printf(" : ");
+        fgets(j6.nom, sizeof(j6.nom), stdin);
+        printf("%s", j6.nom);
+    }
 }
 
 // On initialise les pions pour le début de partie
@@ -355,9 +471,9 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[60].colonne = 3;
 }
 
-// On initialise le plateau pour le début de partie
-void initPlateau(char plateau[][14], pions TousLesPions[],int NBekip) {
-    int limiteplus = 7, limitemoins = 7,ligne,colonne;
+// On place les pions dans le plateau pour chaque tour (pas un init unique, il doit être exécuté à chaque tour pour placer l'update des pions dans le plateau)
+void initPlateau(char plateau[][14], pions TousLesPions[], int NBekip) {
+    int limiteplus = 7, limitemoins = 7, ligne, colonne;
     for (ligne = 0; ligne < 17; ligne++) {
         // On remplit tout le plateau de vide
         for (colonne = 0; colonne < 14; colonne++) {
@@ -425,10 +541,28 @@ void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
     for (int ligne = 0; ligne < 17; ligne++) {
         for (int colonne = 0; colonne < 14; colonne++) {
             if (ligne % 2 == 0) {
+                for (int i = 0; i < 62; i++) {
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 1) Couleur(2, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 2) Couleur(14, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 3) Couleur(9, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 4) Couleur(12, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 5) Couleur(6, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 6) Couleur(13, 0);
+                }
                 printf(" %c", plateau[ligne][colonne]);
+                Couleur(7, 0);
             }
             if (ligne % 2 != 0) {
+                for (int i = 0; i < 62; i++) {
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 1) Couleur(2, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 2) Couleur(14, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 3) Couleur(9, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 4) Couleur(12, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 5) Couleur(6, 0);
+                    if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 6) Couleur(13, 0);
+                }
                 printf("%c ", plateau[ligne][colonne]);
+                Couleur(7, 0);
             }
         }
         printf("\n");
@@ -437,6 +571,7 @@ void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
 
 void deplacement(char plateau[][14]) {
     int pionchoisi, direction;
+    Couleur(7, 0);
     //printf("Joueur '%s'", );
     printf("\nQuel pion voulez-vous jouer ? ( 0 a 9 ) => ");
     scanf("%i", &pionchoisi);
@@ -445,24 +580,11 @@ void deplacement(char plateau[][14]) {
     printf("%i et %i", pionchoisi, direction);
 }
 
-// On définit une couleur juste avant de printf quelque chose
-void Couleur(int couleurDuTexte, int couleurDeFond) {
-        HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
-}
-
-/*void setCouleur(TousLesPions[]) {
-    for (int i = 0; i < 17; i++) {
-        if (TousLesPions[i].ekip == 1) {
-
-        }
-    }
-}*/
-
 int main() {
 	char plateau[17][14];
     pions TousLesPions[65];
     int NBekip, rep;
+    joueurs j1, j2, j3, j4, j5, j6;
     // Menu
     do {
         Couleur(14, 0);
@@ -496,6 +618,7 @@ int main() {
         }
     } while (rep < 1 || rep > 3);
     // Reste des fonctions
+    NomJoueur(NBekip, j1, j2, j3, j4, j5, j6);
     initPions(TousLesPions);
     initPlateau(plateau, TousLesPions, NBekip);
     affichagePlateau(plateau, TousLesPions);

@@ -1,10 +1,10 @@
-// Suppression du message chiant du compilateur sur la dépréciation
+// Suppression du message chiant du compilateur sur la dépréciation de certaines fonctions en C moderne
 #define _CRT_SECURE_NO_WARNINGS 
 // Les biblios
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 #include <string.h>
+#include <windows.h>
 
 // On déclare les structures nécessaires au jeu
 typedef struct pions {
@@ -27,7 +27,7 @@ void Couleur(int couleurDuTexte, int couleurDeFond) {
 int AskJoueur() {
     int rep;
     do {
-        printf("\n\nNombre de joueurs = ");
+        printf("Nombre de joueurs = ");
         scanf("%i", &rep);
         switch (rep) {
             case 2:
@@ -57,7 +57,7 @@ int AskJoueur() {
 void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueurs j5, joueurs j6) {
     if (NBekip == 2) {
         // Joueur 1
-        printf("\nNom du ");
+        printf("Nom du ");
         Couleur(2, 0);
         printf("Joueur 1");
         Couleur(7, 0);
@@ -76,7 +76,7 @@ void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueu
     }
     if (NBekip == 4) {
         // Joueur 1
-        printf("\nNom du ");
+        printf("Nom du ");
         Couleur(2, 0);
         printf("Joueur 1");
         Couleur(7, 0);
@@ -111,7 +111,7 @@ void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueu
     }
     if (NBekip == 6) {
         // Joueur 1
-        printf("\nNom du ");
+        printf("Nom du ");
         Couleur(2, 0);
         printf("Joueur 1");
         Couleur(7, 0);
@@ -471,28 +471,24 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[60].colonne = 3;
 }
 
-// On place les pions dans le plateau pour chaque tour (pas un init unique, il doit être exécuté à chaque tour pour placer l'update des pions dans le plateau)
-void initPlateau(char plateau[][14], pions TousLesPions[], int NBekip) {
-    int limiteplus = 7, limitemoins = 7, ligne, colonne;
-    for (ligne = 0; ligne < 17; ligne++) {
+// On place les pions dans le plateau pour chaque tour (pas un init, il doit être exécuté à chaque tour pour placer l'update des pions dans le plateau)
+void tickPlateau(char plateau[][14], pions TousLesPions[], int NBekip) {
+    int limiteplus = 7, limitemoins = 7;
+    for (int ligne = 0; ligne < 17; ligne++) {
         // On remplit tout le plateau de vide
-        for (colonne = 0; colonne < 14; colonne++) {
+        for (int colonne = 0; colonne < 14; colonne++) {
             plateau[ligne][colonne] = TousLesPions[0].nom;
         }
         // Structure de base pyramide haute
         if (ligne < 13) {
-            for (colonne = 7; colonne <= limiteplus; colonne++) {
+            for (int colonne = 7; colonne <= limiteplus; colonne++) {
                 plateau[ligne][colonne] = TousLesPions[64].nom;
             }
-            for (colonne = 7; colonne >= limitemoins; colonne--) {
+            for (int colonne = 7; colonne >= limitemoins; colonne--) {
                 plateau[ligne][colonne] = TousLesPions[64].nom;
             }
-            if (ligne % 2 != 0 && limitemoins >= 0) {
-                limitemoins--;
-            }
-            if (ligne % 2 == 0) {
-                limiteplus++;
-            }
+            if (ligne % 2 != 0 && limitemoins >= 0) limitemoins--;
+            if (ligne % 2 == 0) limiteplus++;
         }
     }
     limitemoins = 7;
@@ -500,18 +496,14 @@ void initPlateau(char plateau[][14], pions TousLesPions[], int NBekip) {
     for (int ligne = 16; ligne >= 0; ligne--) {
         // Structure de base pyramide basse
         if (ligne > 3) {
-            for (colonne = 7; colonne <= limiteplus; colonne++) {
+            for (int colonne = 7; colonne <= limiteplus; colonne++) {
                 plateau[ligne][colonne] = TousLesPions[64].nom;
             }
-            for (colonne = 7; colonne >= limitemoins; colonne--) {
+            for (int colonne = 7; colonne >= limitemoins; colonne--) {
                 plateau[ligne][colonne] = TousLesPions[64].nom;
             }
-            if (ligne % 2 != 0 && limitemoins >= 0) {
-                limitemoins--;
-            }
-            if (ligne % 2 == 0) {
-                limiteplus++;
-            }
+            if (ligne % 2 != 0 && limitemoins >= 0) limitemoins--;
+            if (ligne % 2 == 0) limiteplus++;
         }
     }
 
@@ -519,19 +511,11 @@ void initPlateau(char plateau[][14], pions TousLesPions[], int NBekip) {
 
     // Il faut qu'on intègre le nombre d'équipe ICI
 
-    for(ligne=0;ligne<20;ligne++)
-    {
-        for(colonne=0;colonne<20;colonne++)
-        {
-            for(int a=0;a<64;a++)
-            {
-                if(TousLesPions[a].ligne == ligne && TousLesPions[a].colonne == colonne && TousLesPions[a].ekip <= NBekip && TousLesPions[a].ekip>0)
-                {
-                    plateau[ligne][colonne] = TousLesPions[a].nom;
-                }
+    for (int ligne = 0; ligne < 20; ligne++) {
+        for (int colonne = 0; colonne < 20; colonne++) {
+            for (int a = 0; a < 64; a++) {
+                if (TousLesPions[a].ligne == ligne && TousLesPions[a].colonne == colonne && TousLesPions[a].ekip <= NBekip && TousLesPions[a].ekip > 0) plateau[ligne][colonne] = TousLesPions[a].nom;
             }
-
-
         }
     }
 }
@@ -570,6 +554,7 @@ void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
 }
 
 void deplacement(char plateau[][14]) {
+    /*
     int pionchoisi, direction;
     Couleur(7, 0);
     //printf("Joueur '%s'", );
@@ -578,6 +563,7 @@ void deplacement(char plateau[][14]) {
     printf("Dans quelle direction voulez-vous jouer ? (0 pour annuler)\n   1%c /2\n   3 - 4\n   5%c /6\n=> ", 92, 92);
     scanf("%i", &direction);
     printf("%i et %i", pionchoisi, direction);
+    */
 }
 
 int main() {
@@ -598,7 +584,7 @@ int main() {
         Couleur(14, 0);
         printf("\xBA\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
         Couleur(7, 0);
-        printf("Que voulez-vous faire ?\n=> 1. Nouvelle partie\n=> 2. Charger une partie existante\n=> 3. Quitter le jeu\n");
+        printf("1. Nouvelle partie\n2. Charger une partie existante\n3. Quitter le jeu\n\n=> ");
         scanf("%i", &rep);
         switch (rep) {
             case 1:
@@ -607,7 +593,7 @@ int main() {
                 NBekip = AskJoueur();
                 break;
             case 2:
-            // Charger une ancienne partie (à implémenter)
+            // Charger une ancienne partie (à implémenter, code de Matthieu)
                 system("cls");
                 break;
             case 3:
@@ -620,7 +606,7 @@ int main() {
     // Reste des fonctions
     NomJoueur(NBekip, j1, j2, j3, j4, j5, j6);
     initPions(TousLesPions);
-    initPlateau(plateau, TousLesPions, NBekip);
+    tickPlateau(plateau, TousLesPions, NBekip);
     affichagePlateau(plateau, TousLesPions);
     deplacement(plateau);
 }

@@ -1,5 +1,5 @@
 // Suppression du message chiant du compilateur sur la dépréciation de certaines fonctions en C moderne
-#define _CRT_SECURE_NO_WARNINGS 
+#define _CRT_SECURE_NO_WARNINGS
 // Les biblios
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +27,7 @@ void Couleur(int couleurDuTexte, int couleurDeFond) {
 int AskJoueur() {
     int rep;
     do {
-        printf("Nombre de joueurs = ");
+        printf("\n\nNombre de joueurs = ");
         scanf("%i", &rep);
         switch (rep) {
             case 2:
@@ -50,7 +50,7 @@ int AskJoueur() {
                 printf("Il n'est pas possible de jouer avec %i joueurs...", rep);
                 break;
         }
-    } while (rep % 2 != 0 || rep < 2 || rep > 6);
+    } while (rep != 2 || rep != 4 || rep != 6);
     return 0;
 }
 
@@ -73,6 +73,7 @@ void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueu
         printf(" : ");
         fgets(j2.nom, sizeof(j2.nom), stdin);
         printf("%s", j2.nom);
+        Sleep(500);
     }
     if (NBekip == 4) {
         // Joueur 1
@@ -108,6 +109,7 @@ void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueu
         printf(" : ");
         fgets(j4.nom, sizeof(j4.nom), stdin);
         printf("%s", j4.nom);
+        Sleep(500);
     }
     if (NBekip == 6) {
         // Joueur 1
@@ -159,6 +161,7 @@ void NomJoueur(int NBekip, joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueu
         printf(" : ");
         fgets(j6.nom, sizeof(j6.nom), stdin);
         printf("%s", j6.nom);
+        Sleep(500);
     }
 }
 
@@ -525,6 +528,7 @@ void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
     for (int ligne = 0; ligne < 17; ligne++) {
         for (int colonne = 0; colonne < 14; colonne++) {
             if (ligne % 2 == 0) {
+                // Assignation des couleurs des pions (lignes paires)
                 for (int i = 0; i < 62; i++) {
                     if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 1) Couleur(2, 0);
                     if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 2) Couleur(14, 0);
@@ -537,6 +541,7 @@ void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
                 Couleur(7, 0);
             }
             if (ligne % 2 != 0) {
+                // Assignation des couleurs des pions (lignes impaires)
                 for (int i = 0; i < 62; i++) {
                     if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 1) Couleur(2, 0);
                     if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip == 2) Couleur(14, 0);
@@ -572,6 +577,7 @@ int main() {
     int NBekip, rep;
     joueurs j1, j2, j3, j4, j5, j6;
     // Menu
+    system("cls");
     do {
         Couleur(14, 0);
         printf("\xC9\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB\n\xBA");
@@ -600,7 +606,7 @@ int main() {
                 return 0;
                 break;
             default:
-                printf("Veuillez r%cessayer\n", 130);
+                system("cls");
         }
     } while (rep < 1 || rep > 3);
     // Reste des fonctions

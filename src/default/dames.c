@@ -59,8 +59,7 @@ void NomJoueur(int NBekip[], joueurs j[]) {
     Couleur(7, 0);
     printf(" : ");
     fgets(j[1].nom, sizeof(j[1].nom), stdin);
-    fgets(j[1].nom, sizeof(j[1].nom), stdin); // On doit remettre la même commande, sinon... elle ne s'exécute pas la première fois. Bug dans C ?
-    //printf("%s", j[1].nom);
+    fgets(j[1].nom, sizeof(j[1].nom), stdin); // On doit remettre la même commande, sinon... elle ne s'exécute pas la première fois. Bug ?
     // Joueur 2
     printf("\nNom du ");
     Couleur(14, 0);
@@ -68,7 +67,6 @@ void NomJoueur(int NBekip[], joueurs j[]) {
     Couleur(7, 0);
     printf(" : ");
     fgets(j[2].nom, sizeof(j[2].nom), stdin);
-    //printf("%s", j[2].nom);
     if (NBekip[0] >= 4) {
         // Joueur 3
         printf("\nNom du ");
@@ -77,7 +75,6 @@ void NomJoueur(int NBekip[], joueurs j[]) {
         Couleur(7, 0);
         printf(" : ");
         fgets(j[3].nom, sizeof(j[3].nom), stdin);
-        //printf("%s", j[3].nom);
         // Joueur 4
         printf("\nNom du ");
         Couleur(12, 0);
@@ -85,7 +82,6 @@ void NomJoueur(int NBekip[], joueurs j[]) {
         Couleur(7, 0);
         printf(" : ");
         fgets(j[4].nom, sizeof(j[4].nom), stdin);
-        //printf("%s", j[4].nom);
     }
     if (NBekip[0] == 6) {
         // Joueur 5
@@ -95,7 +91,6 @@ void NomJoueur(int NBekip[], joueurs j[]) {
         Couleur(7, 0);
         printf(" : ");
         fgets(j[5].nom, sizeof(j[5].nom), stdin);
-        //printf("%s", j[5].nom);
         // Joueur 6
         printf("\nNom du ");
         Couleur(13, 0);
@@ -103,7 +98,6 @@ void NomJoueur(int NBekip[], joueurs j[]) {
         Couleur(7, 0);
         printf(" : ");
         fgets(j[6].nom, sizeof(j[6].nom), stdin);
-        //printf("%s", j[6].nom);
     }
 }
 
@@ -125,12 +119,12 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[2].ligne = 1;
     TousLesPions[2].colonne = 7;
 
-    TousLesPions[3].ekip =1;
+    TousLesPions[3].ekip = 1;
     TousLesPions[3].nom = '2';
     TousLesPions[3].ligne = 1;
     TousLesPions[3].colonne = 8;
 
-    TousLesPions[4].ekip =1;
+    TousLesPions[4].ekip = 1;
     TousLesPions[4].nom = '3';
     TousLesPions[4].ligne = 2;
     TousLesPions[4].colonne = 6;
@@ -175,12 +169,12 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[12].ligne = 15;
     TousLesPions[12].colonne = 7;
 
-    TousLesPions[13].ekip =2;
+    TousLesPions[13].ekip = 2;
     TousLesPions[13].nom = '2';
     TousLesPions[13].ligne = 15;
     TousLesPions[13].colonne = 8;
 
-    TousLesPions[14].ekip =2;
+    TousLesPions[14].ekip = 2;
     TousLesPions[14].nom = '3';
     TousLesPions[14].ligne = 14;
     TousLesPions[14].colonne = 6;
@@ -205,7 +199,7 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[18].ligne = 13;
     TousLesPions[18].colonne = 7;
 
-    TousLesPions[19].ekip =2;
+    TousLesPions[19].ekip = 2;
     TousLesPions[19].nom = '8';
     TousLesPions[19].ligne = 13;
     TousLesPions[19].colonne = 8;
@@ -225,12 +219,12 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[22].ligne = 4;
     TousLesPions[22].colonne = 2;
 
-    TousLesPions[23].ekip =3;
+    TousLesPions[23].ekip = 3;
     TousLesPions[23].nom = '5';
     TousLesPions[23].ligne = 4;
     TousLesPions[23].colonne = 3;
 
-    TousLesPions[24].ekip =3;
+    TousLesPions[24].ekip = 3;
     TousLesPions[24].nom = '9';
     TousLesPions[24].ligne = 4;
     TousLesPions[24].colonne = 4;
@@ -275,12 +269,12 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[32].ligne = 11;
     TousLesPions[32].colonne = 13;
 
-    TousLesPions[33].ekip =4;
+    TousLesPions[33].ekip = 4;
     TousLesPions[33].nom = '2';
     TousLesPions[33].ligne = 12;
     TousLesPions[33].colonne = 12;
 
-    TousLesPions[34].ekip =4;
+    TousLesPions[34].ekip = 4;
     TousLesPions[34].nom = '3';
     TousLesPions[34].ligne = 10;
     TousLesPions[34].colonne = 12;
@@ -308,7 +302,7 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[39].ekip = 4;
     TousLesPions[39].nom = '8';
     TousLesPions[39].ligne = 11;
-    TousLesPions[39].colonne =11;
+    TousLesPions[39].colonne = 11;
 
     TousLesPions[40].ekip = 4;
     TousLesPions[40].nom = '9';
@@ -325,12 +319,12 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[42].ligne = 5;
     TousLesPions[42].colonne = 13;
 
-    TousLesPions[43].ekip =5;
+    TousLesPions[43].ekip = 5;
     TousLesPions[43].nom = '2';
     TousLesPions[43].ligne = 4;
     TousLesPions[43].colonne = 12;
 
-    TousLesPions[44].ekip =5;
+    TousLesPions[44].ekip = 5;
     TousLesPions[44].nom = '3';
     TousLesPions[44].ligne = 6;
     TousLesPions[44].colonne = 12;
@@ -358,7 +352,7 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[49].ekip = 5;
     TousLesPions[49].nom = '8';
     TousLesPions[49].ligne = 5;
-    TousLesPions[49].colonne =11;
+    TousLesPions[49].colonne = 11;
 
     TousLesPions[50].ekip = 5;
     TousLesPions[50].nom = '9';
@@ -610,123 +604,108 @@ void deplacement(pions TousLesPions[], char plateau[][14], char bledard, int dir
                     TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
                     TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
                 }
-                temp=1;
+                temp = 1;
             }
         }
     }
 }
 
 void choixdeplacement(char plateau[][14], pions TousLesPions[], int ekip[0]) {
-    int direction=7,pionchoisi=10,cbon1=0,cbon2=0;
-    int check[6], pionsjouable[10],a;
-    char temp[6],bledard;
+    int direction = 7, pionchoisi = 10, cbon1 = 0, cbon2 = 0, check[6], pionsjouable[10];
+    char temp[6], bledard;
     bledard = lavoiddubledard(bledard, pionchoisi);
-    verifdeplacement(TousLesPions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
-    do
-    {
-       do
-       {
-            printf("\nQuel pion voulez-vous jouer ?");
-        for(a=0;a<10;a++)
-        {
-            if(pionsjouable[a]==1)
-            printf("|%i",a);
+    verifdeplacement(TousLesPions, plateau, pionchoisi, pionsjouable, check, bledard, ekip);
+    do {
+        do {
+            printf("\nQuel pion faut-il d%cplacer ? ", 130);
+            for (int a = 0; a < 10; a++) {
+                if (pionsjouable[a] == 1) printf("| %i ", a);
+            }
+            printf("|\n");
+            scanf("%i", &pionchoisi);
+            if (pionchoisi > 9 || pionchoisi < 0) printf("Erreur de saisie\n");
+            if (pionsjouable[pionchoisi] == 0) printf("Ce pion ne peut pas bouger\n");
+            if ((pionchoisi < 9 || pionchoisi > 0) && (pionsjouable[pionchoisi] == 1)) {
+                printf("Voulez-vous vraiment d%cplacer ce pion ? (1 pour continuer, 0 pour annuler)\n", 130);
+                scanf("%i", &cbon1);
+            }
+            else cbon1 = 1;
+        } while (cbon1 == 0);
+    } while (pionchoisi > 9 || pionchoisi < 0 || pionsjouable[pionchoisi] == 0);
+    bledard = lavoiddubledard(bledard, pionchoisi);
+    verifdeplacement(TousLesPions, plateau, pionchoisi, pionsjouable, check, bledard, ekip);
+    printf("Dans quelle direction voulez-vous jouer ?\n");
+    // Les checks servent à afficher les positions où le pion peut se déplacer
+    if (check[0] == 1) temp[0] = '1';
+    else temp[0] = ' ';
+    if (check[1] == 1) temp[1] = '5';
+    else temp[1] = ' ';
+    if (check[2] == 1) temp[2] = '3';
+    else temp[2] = ' ';
+    if (check[3] == 1) temp[3] = '4';
+    else temp[3] = ' ';
+    if (check[4] == 1) temp[4] = '2';
+    else temp[4] = ' ';
+    if (check[5] == 1) temp[5] = '6';
+    else temp[5] = ' ';
+    do {
+        printf("%c/ \\%c\n%c - %c\n%c\\ /%c\n=> ", temp[0], temp[4], temp[2], temp[3], temp[1], temp[5]);
+        scanf("%i", &direction);
+        if (direction < 1 || direction > 6) printf("Erreur de saisie\n");
+        else {
+            if (check[0] == 0 && direction == 1) printf("D%cplacement impossible\n", 130);
+            if (check[1] == 0 && direction == 5) printf("D%cplacement impossible\n", 130);
+            if (check[2] == 0 && direction == 3) printf("D%cplacement impossible\n", 130);
+            if (check[3] == 0 && direction == 4) printf("D%cplacement impossible\n", 130);
+            if (check[4] == 0 && direction == 2) printf("D%cplacement impossible\n", 130);
+            if (check[5] == 0 && direction == 6) printf("D%cplacement impossible\n", 130);
+            //
+            if (check[0] == 1 && direction == 1) cbon2 = 1;
+            if (check[1] == 1 && direction == 5) cbon2 = 1;
+            if (check[2] == 1 && direction == 3) cbon2 = 1;
+            if (check[3] == 1 && direction == 4) cbon2 = 1;
+            if (check[4] == 1 && direction == 2) cbon2 = 1;
+            if (check[5] == 1 && direction == 6) cbon2 = 1;
         }
-        printf("\n");
-        fflush(stdin);
-        scanf("%i", &pionchoisi);
-        if(pionchoisi >9 || pionchoisi<0) printf("Erreur de saisie\n");
-        if(pionsjouable[pionchoisi]==0) printf("ce pion ne peut pas bouger\n");
-
-        if((pionchoisi <9 || pionchoisi>0 )&& pionsjouable[pionchoisi]==1)
-        {
-            printf("Voulez vous vraiment deplacer ce pion ? ? (0 pour annuler, 1 pour continuer)\n");
-            scanf("%i",&cbon1);
-        }
-        else cbon1=1;
-
-       }while(cbon1==0);
-    }while(pionchoisi>9||pionchoisi<0 || pionsjouable[pionchoisi]==0);
-        bledard=lavoiddubledard(bledard,pionchoisi);
-        verifdeplacement(TousLesPions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
-
-
-
-    printf("Dans quelle direction voulez-vous jouer ? \n");
-
-    if(check[0]==1) temp[0]='1';
-    else temp[0]=' ';
-    if(check[1]==1) temp[1]='5';
-    else temp[1]=' ';                       //en gros, ça sert a afficher les déplacements du pions possible.
-    if(check[2]==1) temp[2]='3';
-    else temp[2]=' ';
-    if(check[3]==1) temp[3]='4';
-    else temp[3]=' ';
-    if(check[4]==1) temp[4]='2';
-    else temp[4]=' ';
-    if(check[5]==1) temp[5]='6';
-    else temp[5]=' ';
-    do
-    {
-        printf("%c/ \\%c\n%c - %c\n%c\\ /%c\n=> ",temp[0],temp[4],temp[2],temp[3],temp[1],temp[5]);
-        scanf("%i",&direction);
-        if(1>direction || direction>6) printf("Erreur de saisie\n");
-        else
-        {
-        if(check[0]==0 && direction==1) printf("deplacement impossible\n");
-        if(check[1]==0 && direction==5) printf("deplacement impossible\n");
-        if(check[2]==0 && direction==3) printf("deplacement impossible\n");
-        if(check[3]==0 && direction==4) printf("deplacement impossible\n");
-        if(check[4]==0 && direction==2) printf("deplacement impossible\n");
-        if(check[5]==0 && direction==6) printf("deplacement impossible\n");
-        //
-        if(check[0]==1 && direction==1) cbon2=1;
-        if(check[1]==1 && direction==5) cbon2=1;
-        if(check[2]==1 && direction==3) cbon2=1;
-        if(check[3]==1 && direction==4) cbon2=1;
-        if(check[4]==1 && direction==2) cbon2=1;
-        if(check[5]==1 && direction==6) cbon2=1;
-        }
-    }
-    while(cbon2==0);
-    bledard=lavoiddubledard(bledard,pionchoisi);
-    deplacement(TousLesPions,plateau,bledard,direction,ekip);
+    } while (cbon2 == 0);
+    bledard = lavoiddubledard(bledard, pionchoisi);
+    deplacement(TousLesPions, plateau, bledard, direction, ekip);
 }
 
 void NomJoueurTour(int ekip[], joueurs j[]) {
     // Affichage du nom du joueur qui joue le tour, juste avant la question de quel pion jouer
     if (ekip[0] == 1) {
-        printf("\n%c vous de jouer, ", 183);
+        printf("\nA vous de jouer, ");
         Couleur(2, 0);
         printf("%s", j[1].nom);
         Couleur(7, 0);
     }
     if (ekip[0] == 2) {
-        printf("\n%c vous de jouer, ", 183);
+        printf("\nA vous de jouer, ");
         Couleur(14, 0);
         printf("%s", j[2].nom);
         Couleur(7, 0);
     }
     if (ekip[0] == 3) {
-        printf("\n%c vous de jouer, ", 183);
+        printf("\nA vous de jouer, ");
         Couleur(9, 0);
         printf("%s", j[3].nom);
         Couleur(7, 0);
     }
     if (ekip[0] == 4) {
-        printf("\n%c vous de jouer, ", 183);
+        printf("\nA vous de jouer, ");
         Couleur(12, 0);
         printf("%s", j[4].nom);
         Couleur(7, 0);
     }
     if (ekip[0] == 5) {
-        printf("\n%c vous de jouer, ", 183);
+        printf("\nA vous de jouer, ");
         Couleur(6, 0);
         printf("%s", j[5].nom);
         Couleur(7, 0);
     }
     if (ekip[0] == 6) {
-        printf("\n%c vous de jouer, ", 183);
+        printf("\nA vous de jouer, ");
         Couleur(13, 0);
         printf("%s", j[6].nom);
         Couleur(7, 0);
@@ -734,89 +713,118 @@ void NomJoueurTour(int ekip[], joueurs j[]) {
 }
 
 void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[], joueurs j[]) {
-    int win = 0;
+    int win = 0, retourmenu = 0, swich;
     do {
         ekip[0]++;
         if (ekip[0] > NBekip[0]) ekip[0] = 1;
         tickPlateau(plateau, TousLesPions, NBekip);
         affichagePlateau(plateau, TousLesPions);
         NomJoueurTour(ekip, j);
-        // On joue le tour pour le n joueur
-        choixdeplacement(plateau, TousLesPions, ekip);
-    } while (win != 1);
+        printf("\nAfficher menu ? : oui=1 non=0\n");
+        scanf("%i", &swich);
+        switch (swich) {
+            case 0:
+                retourmenu = 0;
+                break;
+            case 1:
+                retourmenu = 1;
+                break;
+            default:
+                printf("Erreur de saisie\n");
+                break;
+        }
+        // On joue le tour du n-ième joueur [si le joueur ne retourne pas au menu !!!]
+        if (retourmenu == 0) choixdeplacement(plateau, TousLesPions, ekip);
+    } while (win != 1 && retourmenu == 0);
     // Implémenter fin de partie (gg)
 }
 
-void Creationsauvegarde(pions Touslespions[],int NBekip[],joueurs j[],int ekip[])
-{
-    FILE * sauvegarde; //sauvegarde est un pointer de fichier
-    sauvegarde=fopen("Sauvegarde.txt","w");
-    int a;
-    for (a=1;a<61;a++)
-    {
-        fprintf(sauvegarde,"%c %i %i %i\n",Touslespions[a].nom,Touslespions[a].ekip,Touslespions[a].ligne,Touslespions[a].colonne);
-
-    }
-    fprintf(sauvegarde,"NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n",NBekip[0], ekip[0],j[1].nom, j[2].nom, j[3].nom, j[4].nom, j[5].nom, j[6].nom);
+void Creationsauvegarde(pions TousLesPions[], int NBekip[], joueurs j[], int ekip[]) {
+    FILE * sauvegarde; // sauvegarde est un pointeur de fichier
+    sauvegarde = fopen("sauvegarde.esiee", "w");
+    for (int a = 1; a < 61; a++) fprintf(sauvegarde, "%c %i %i %i\n", TousLesPions[a].nom, TousLesPions[a].ekip, TousLesPions[a].ligne, TousLesPions[a].colonne);
+    fprintf(sauvegarde, "NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n", NBekip[0], ekip[0], j[1].nom, j[2].nom, j[3].nom, j[4].nom, j[5].nom, j[6].nom);
     fclose(sauvegarde);
 }
 
-void Liresauvegarde(pions Touslespions[], int NBekip[],joueurs j[],int ekip[])
-{
-    FILE * sauvegarde=NULL;
-    sauvegarde=fopen("Sauvegarde.txt","r");
-    int a;
+void Liresauvegarde(pions TousLesPions[], int NBekip[], joueurs j[], int ekip[]) {
+    FILE * sauvegarde = NULL;
+    sauvegarde = fopen("sauvegarde.esiee", "r");
+    for (int a = 1; a < 61; a++) fscanf(sauvegarde, "%c %i %i %i\n", &TousLesPions[a].nom, &TousLesPions[a].ekip, &TousLesPions[a].ligne, &TousLesPions[a].colonne);
+    fscanf(sauvegarde, "NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n", &NBekip[0], &ekip[0], &j[1].nom, &j[2].nom, &j[3].nom, &j[4].nom, &j[5].nom, &j[6].nom);
+    fclose(sauvegarde);
+}
 
-            for (a=1;a<61;a++)
-        {
-            fscanf(sauvegarde,"%c %i %i %i\n",&Touslespions[a].nom,&Touslespions[a].ekip,&Touslespions[a].ligne,&Touslespions[a].colonne);
-        }
-        fscanf(sauvegarde,"NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n",&NBekip[0], &ekip[0],&j[1].nom,&j[2].nom,&j[3].nom,&j[4].nom,&j[5].nom,&j[6].nom);
-        fclose(sauvegarde);
-
-
-    }
+void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], int win, int EnCours[], int fin[], joueurs j[]) {
+    int rep;
+    do {
+        printf("1. Nouvelle partie\n2. Charger une partie existante\n3. Quitter le jeu\n");
+        if (EnCours[0] == 1) printf("4. Sauvegarder la partie\n5. Continuer la partie\n");
+        printf("\n=> ");
+        scanf("%i", &rep);
+        switch (rep) {
+            case 1:
+                // Lancement du jeu
+                system("cls");
+                NBekip[0] = AskJoueur();
+                NomJoueur(NBekip, j);
+                boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
+                EnCours[0] = 1;
+                break;
+            case 2:
+                // Charger une ancienne partie
+                Liresauvegarde(TousLesPions, NBekip, j, ekip);
+                boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
+                EnCours[0] = 1;
+                //system("cls");
+                break;
+            case 3:
+                // Fermer le jeu
+                fin[0] = 1;
+                break;
+            case 4:
+                // Sauvegarder la partie en cours
+                Creationsauvegarde(TousLesPions, NBekip, j, ekip);
+                break;
+            case 5:
+                // Continuer la partie
+                boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
+                break;
+            default:
+                system("cls");
+                printf("Erreur de saisie\n");
+                break;
+            }
+        } while (rep < 1 || rep > 5 );
+}
 
 int main() {
 	char plateau[17][14];
     pions TousLesPions[65];
-    int NBekip[1], ekip[1], rep;
+    int NBekip[1], ekip[1], win = 0, fin[1], EnCours[1];
     joueurs j[7]; // 7 au lieu de 6 car flemme de dire que j[0] vaut le joueur 1
     ekip[0] = 0;
     // Menu
-    initPions(TousLesPions);
     system("cls");
+    initPions(TousLesPions);
+    Couleur(14, 0);
+    printf("\xC9\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB\n\xBA");
+    Couleur(12, 0);
+    printf("          BIENVENUE SUR          ");
+    Couleur(14, 0);
+    printf("\xBA\n\xBA");
+    Couleur(12, 0);
+    printf("       LES DAMES CHINOISES       ");
+    Couleur(14, 0);
+    printf("\xBA\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
+    Couleur(7, 0);
     do {
-        Couleur(14, 0);
-        printf("\xC9\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB\n\xBA");
-        Couleur(12, 0);
-        printf("          BIENVENUE SUR          ");
-        Couleur(14, 0);
-        printf("\xBA\n\xBA");
-        Couleur(12, 0);
-        printf("       LES DAMES CHINOISES       ");
-        Couleur(14, 0);
-        printf("\xBA\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
-        Couleur(7, 0);
-        printf("1. Nouvelle partie\n2. Charger une partie existante\n3. Quitter le jeu\n\n=> ");
-        scanf("%i", &rep);
-        switch (rep) {
-            case 1:
-            // Lancement du jeu
-                system("cls");
-                NBekip[0] = AskJoueur();
-                break;
-            case 2:
-                Liresauvegarde(TousLesPions,NBekip,j,ekip);
-                //system("cls");
-                break;
-            case 3:
-                return 0;
-                break;
-            default:
-                system("cls");
+        if (EnCours[0] == 1) {
+            system("cls");
+            affichagePlateau(plateau, TousLesPions);
         }
-    } while (rep < 1 || rep > 3);
+        menu(NBekip, TousLesPions, plateau, ekip, win, EnCours, fin, j);
+    } while (win != 1 && fin[0] != 1);
     // Reste des fonctions
     NomJoueur(NBekip, j);
     boucleJeu(plateau, TousLesPions, NBekip, ekip, j);

@@ -14,13 +14,12 @@ typedef struct pions {
 
 typedef struct joueurs {
 	char nom[256]; // j'espère qu'ils auront pas un nom trop long...
-	int ekip; // de 1 à 6
 }joueurs;
 
 // On définit une couleur juste avant de printf quelque chose
 void Couleur(int couleurDuTexte, int couleurDeFond) {
-        HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
+    HANDLE H = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
 }
 
 // On demande le nombre de joueurs et leur pseudo
@@ -34,134 +33,77 @@ int AskJoueur() {
             // Commence le jeu avec 2J
                 system("cls");
                 return 2;
-                break;
             case 4:
             // Commence le jeu avec 4J
                 system("cls");
                 return 4;
-                break;
             case 6:
             // Commence le jeu avec 6J
                 system("cls");
                 return 6;
-                break;
             default:
                 system("cls");
                 printf("Il n'est pas possible de jouer avec %i joueurs...", rep);
                 break;
         }
     } while (rep != 2 || rep != 4 || rep != 6);
-    return 0;
+    return 0; // Obligé de mettre un return ici car c'est une int, mais en théorie ça return forcément la valeur joueurs
 }
 
-void NomJoueur(int NBekip[], joueurs j1, joueurs j2, joueurs j3, joueurs j4, joueurs j5, joueurs j6) {
-    if (NBekip[0] == 2) {
-        // Joueur 1
-        printf("Nom du ");
-        Couleur(2, 0);
-        printf("Joueur 1");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j1.nom, sizeof(j1.nom), stdin);
-        fgets(j1.nom, sizeof(j1.nom), stdin);
-        printf("%s", j1.nom);
-        // Joueur 2
-        printf("\nNom du ");
-        Couleur(14, 0);
-        printf("Joueur 2");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j2.nom, sizeof(j2.nom), stdin);
-        printf("%s", j2.nom);
-        Sleep(500);
-    }
-    if (NBekip[0] == 4) {
-        // Joueur 1
-        printf("Nom du ");
-        Couleur(2, 0);
-        printf("Joueur 1");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j1.nom, sizeof(j1.nom), stdin);
-        fgets(j1.nom, sizeof(j1.nom), stdin);
-        printf("%s", j1.nom);
-        // Joueur 2
-        printf("\nNom du ");
-        Couleur(14, 0);
-        printf("Joueur 2");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j2.nom, sizeof(j2.nom), stdin);
-        printf("%s", j2.nom);
+// On demande le nom des joueurs n, pour plus de customisation
+void NomJoueur(int NBekip[], joueurs j[]) {
+    // Joueur 1
+    printf("Nom du ");
+    Couleur(2, 0);
+    printf("Joueur 1");
+    Couleur(7, 0);
+    printf(" : ");
+    fgets(j[1].nom, sizeof(j[1].nom), stdin);
+    fgets(j[1].nom, sizeof(j[1].nom), stdin); // On doit remettre la même commande, sinon... elle ne s'exécute pas la première fois. Bug dans C ?
+    //printf("%s", j[1].nom);
+    // Joueur 2
+    printf("\nNom du ");
+    Couleur(14, 0);
+    printf("Joueur 2");
+    Couleur(7, 0);
+    printf(" : ");
+    fgets(j[2].nom, sizeof(j[2].nom), stdin);
+    //printf("%s", j[2].nom);
+    if (NBekip[0] >= 4) {
         // Joueur 3
         printf("\nNom du ");
         Couleur(9, 0);
         printf("Joueur 3");
         Couleur(7, 0);
         printf(" : ");
-        fgets(j3.nom, sizeof(j3.nom), stdin);
-        printf("%s", j3.nom);
+        fgets(j[3].nom, sizeof(j[3].nom), stdin);
+        //printf("%s", j[3].nom);
         // Joueur 4
         printf("\nNom du ");
         Couleur(12, 0);
         printf("Joueur 4");
         Couleur(7, 0);
         printf(" : ");
-        fgets(j4.nom, sizeof(j4.nom), stdin);
-        printf("%s", j4.nom);
-        Sleep(500);
+        fgets(j[4].nom, sizeof(j[4].nom), stdin);
+        //printf("%s", j[4].nom);
     }
     if (NBekip[0] == 6) {
-        // Joueur 1
-        printf("Nom du ");
-        Couleur(2, 0);
-        printf("Joueur 1");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j1.nom, sizeof(j1.nom), stdin);
-        fgets(j1.nom, sizeof(j1.nom), stdin);
-        printf("%s", j1.nom);
-        // Joueur 2
-        printf("\nNom du ");
-        Couleur(14, 0);
-        printf("Joueur 2");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j2.nom, sizeof(j2.nom), stdin);
-        printf("%s", j2.nom);
-        // Joueur 3
-        printf("\nNom du ");
-        Couleur(9, 0);
-        printf("Joueur 3");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j3.nom, sizeof(j3.nom), stdin);
-        printf("%s", j3.nom);
-        // Joueur 4
-        printf("\nNom du ");
-        Couleur(12, 0);
-        printf("Joueur 4");
-        Couleur(7, 0);
-        printf(" : ");
-        fgets(j4.nom, sizeof(j4.nom), stdin);
-        printf("%s", j4.nom);
         // Joueur 5
         printf("\nNom du ");
         Couleur(6, 0);
         printf("Joueur 5");
         Couleur(7, 0);
         printf(" : ");
-        fgets(j5.nom, sizeof(j5.nom), stdin);
-        printf("%s", j5.nom);
+        fgets(j[5].nom, sizeof(j[5].nom), stdin);
+        //printf("%s", j[5].nom);
         // Joueur 6
         printf("\nNom du ");
         Couleur(13, 0);
         printf("Joueur 6");
         Couleur(7, 0);
         printf(" : ");
-        fgets(j6.nom, sizeof(j6.nom), stdin);
-        printf("%s", j6.nom);
-        Sleep(500);
+        fgets(j[6].nom, sizeof(j[6].nom), stdin);
+        //printf("%s", j[6].nom);
     }
 }
 
@@ -474,7 +416,7 @@ void initPions(pions TousLesPions[]) {
     TousLesPions[60].colonne = 3;
 }
 
-// On place les pions dans le plateau pour chaque tour (pas un init, il doit être exécuté à chaque tour pour placer l'update des pions dans le plateau)
+// On place les pions dans le plateau pour chaque tour (pas un init, il doit être exécuté à chaque tour pour update les pions)
 void tickPlateau(char plateau[][14], pions TousLesPions[], int NBekip[]) {
     int limiteplus = 7, limitemoins = 7;
     for (int ligne = 0; ligne < 17; ligne++) {
@@ -509,11 +451,6 @@ void tickPlateau(char plateau[][14], pions TousLesPions[], int NBekip[]) {
             if (ligne % 2 == 0) limiteplus++;
         }
     }
-
-    // Affectation des pions joueur
-
-    // Il faut qu'on intègre le nombre d'équipe ICI
-
     for (int ligne = 0; ligne < 20; ligne++) {
         for (int colonne = 0; colonne < 20; colonne++) {
             for (int a = 0; a < 64; a++) {
@@ -523,6 +460,7 @@ void tickPlateau(char plateau[][14], pions TousLesPions[], int NBekip[]) {
     }
 }
 
+// On affiche le plateau et, pendant l'affichage, on met de la couleur sur les pions des joueurs
 void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
     system("cls");
     for (int ligne = 0; ligne < 17; ligne++) {
@@ -558,137 +496,122 @@ void affichagePlateau(char plateau[][14], pions TousLesPions[]) {
     }
 }
 
-// Façon miséreuse de bien assigner bledard, c rien c le bled
-char lavoiddubledard (char bledard,int pionchoisi) // cette fonction sert à transformer des entiers en char
- {
-    if(pionchoisi==0)bledard='0';
-    if(pionchoisi==1)bledard='1';
-    if(pionchoisi==2)bledard='2';
-    if(pionchoisi==3)bledard='3';
-    if(pionchoisi==4)bledard='4';
-    if(pionchoisi==5)bledard='5';
-    if(pionchoisi==6)bledard='6';
-    if(pionchoisi==7)bledard='7';
-    if(pionchoisi==8)bledard='8';
-    if(pionchoisi==9)bledard='9';
-    if(pionchoisi==10) bledard='n';
+// Façon miséreuse de bien assigner bledard, c rien c le bled (transformation des entiers en char)
+char lavoiddubledard(char bledard, int pionchoisi) {
+    if (pionchoisi == 0) bledard = '0';
+    if (pionchoisi == 1) bledard = '1';
+    if (pionchoisi == 2) bledard = '2';
+    if (pionchoisi == 3) bledard = '3';
+    if (pionchoisi == 4) bledard = '4';
+    if (pionchoisi == 5) bledard = '5';
+    if (pionchoisi == 6) bledard = '6';
+    if (pionchoisi == 7) bledard = '7';
+    if (pionchoisi == 8) bledard = '8';
+    if (pionchoisi == 9) bledard = '9';
+    if (pionchoisi == 10) bledard = 'n';
     return bledard;
- }
+}
 
-void verifdeplacement(pions TousLespions[],char plateau[][14], int pionchoisi, int pionsjouable[],int check[],char bledard,int ekip[]) // rajouter equipe qui joue
-{
-    int a,b; //check[0]-> NE | check[1]-> SE |check[2]-> E |check[3]-> O |check[4]-> NO |check[5]-> SO
-    int dpLON=0;
-    if(bledard== 'n')
-    {
-        for(a=0;a<10;a++)
-        {
-            pionsjouable[a]=0;
+// On vérifie les déplacements possibles autour du pion
+void verifdeplacement(pions TousLesPions[], char plateau[][14], int pionchoisi, int pionsjouable[], int check[], char bledard, int ekip[]) {
+    //check[0]-> NO | check[1]-> SO |check[2]-> O |check[3]-> E |check[4]-> NE |check[5]-> SE
+    int dplON = 0;
+    if (bledard == 'n') {
+        for(int a = 0; a < 10; a++) {
+            pionsjouable[a] = 0;
         }
     }
-
-    for(a=1;a<61;a++)
-    {
-        int dplON=0;
-        if((TousLespions[a].ekip==ekip[0] && TousLespions[a].nom == bledard) || (TousLespions[a].ekip == ekip[0] && bledard=='n' )) //strcmp?
-        {
-                for(int c=0;c<6;c++)
-                {
-                    check[c]= 0;
+    for(int a = 1; a < 61; a++) {
+        dplON = 0;
+        if ((TousLesPions[a].ekip == ekip[0] && TousLesPions[a].nom == bledard) || (TousLesPions[a].ekip == ekip[0] && bledard == 'n')) {
+            for (int c = 0; c < 6; c++) {
+                check[c] = 0;
+            }
+            if (TousLesPions[a].ligne % 2 == 0) {
+                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne] == '.') check[0] = 1; //NO
+                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne] == '.') check[1] = 1; //SO
+                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne - 1] == '.') check[2] = 1; //O
+                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne + 1] == '.') check[3] = 1; //E
+                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne + 1] == '.') check[4] = 1; //NE
+                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne + 1] == '.') check[5] = 1; //SE
+            }
+            if (TousLesPions[a].ligne % 2 !=0) {
+                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne - 1] == '.') check[0] = 1; //NO
+                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne - 1] == '.') check[1] = 1;//SO
+                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne - 1] == '.') check[2] = 1; //O
+                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne + 1] == '.') check[3] = 1; //E
+                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne] == '.') check[4] = 1; //NE
+                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne] == '.') check[5] = 1; //SE
+            }
+            if (bledard == 'n') {
+                for (int b = 0; b < 6; b++) {
+                    if (check[b] != 1) dplON++;
                 }
-            if(TousLespions[a].ligne%2==0)
-            {
-                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne] == '.')check[0]=1; //NO
-                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne] == '.')check[1]=1; //SO
-                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne-1] == '.')check[2]=1; //O
-                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne+1] == '.')check[3]=1; //E
-                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne+1] == '.')check[4]=1; //NE
-                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne+1] == '.'){check[5]=1;} //SE
+                if (dplON != 6 && TousLesPions[a].nom == '0') pionsjouable[0] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '1') pionsjouable[1] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '2') pionsjouable[2] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '3') pionsjouable[3] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '4') pionsjouable[4] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '5') pionsjouable[5] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '6') pionsjouable[6] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '7') pionsjouable[7] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '8') pionsjouable[8] = 1;
+                if (dplON != 6 && TousLesPions[a].nom == '9') pionsjouable[9] = 1;
             }
-            if(TousLespions[a].ligne%2!=0)
-            {
-                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne-1] == '.')check[0]=1; //NO
-                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne-1] == '.')check[1]=1;//SO
-                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne-1] == '.')check[2]=1; //O
-                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne+1] == '.')check[3]=1; //E
-                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne] == '.')check[4]=1; //NE
-                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne] == '.')check[5]=1; //SE
-            }
-
-            if(bledard=='n')
-            {
-                for(b=0;b<6;b++)
-                {
-                    if(check[b]!=1) dplON++;
-                }
-                if(dplON != 6 && TousLespions[a].nom =='0') pionsjouable[0]=1;
-                if(dplON != 6 && TousLespions[a].nom =='1') pionsjouable[1]=1;
-                if(dplON != 6 && TousLespions[a].nom =='2') pionsjouable[2]=1;
-                if(dplON != 6 && TousLespions[a].nom =='3') pionsjouable[3]=1;
-                if(dplON != 6 && TousLespions[a].nom =='4') pionsjouable[4]=1;
-                if(dplON != 6 && TousLespions[a].nom =='5') pionsjouable[5]=1;
-                if(dplON != 6 && TousLespions[a].nom =='6') pionsjouable[6]=1;
-                if(dplON != 6 && TousLespions[a].nom =='7') pionsjouable[7]=1;
-                if(dplON != 6 && TousLespions[a].nom =='8') pionsjouable[8]=1;
-                if(dplON != 6 && TousLespions[a].nom =='9') pionsjouable[9]=1;
-
-            }
-
         }
     }
 }
 
-void deplacement(pions TousLespions[],char plateau[][14],char bledard,int direction,int ekip[])
-{
-    int a,temp=0; //temp sert à empecher que la boucle se répète 2 fois
+void deplacement(pions TousLesPions[], char plateau[][14], char bledard, int direction, int ekip[]) {
+    int temp = 0; // temp sert à empêcher que la boucle se répète 2 fois
     printf("bledard:%c, direction:%i\n",bledard,direction);
-        for(a=1;a<61;a++)
-    {
-        if(TousLespions[a].nom == bledard && TousLespions[a].ekip== ekip[0])
-        {printf("nom:%c ekip:%i direction:%i\n",TousLespions[a].nom,TousLespions[a].ekip,direction);
-            if(TousLespions[a].ligne%2!=0 && temp==0)
-            {
-                if(direction==1)
-                {
-                    TousLespions[a].ligne=TousLespions[a].ligne-1;
-                    TousLespions[a].colonne=TousLespions[a].colonne-1;
-                };//NO
-                if(direction==5){
-                    TousLespions[a].ligne=TousLespions[a].ligne+1;
-                    TousLespions[a].colonne=TousLespions[a].colonne-1;
-                }//SO
-                if(direction==3)TousLespions[a].colonne=TousLespions[a].colonne-1;//O
-                if(direction==4)TousLespions[a].colonne=TousLespions[a].colonne+1;//E
-                if(direction==2)
-                {
-                    TousLespions[a].ligne=TousLespions[a].ligne-1;
-
-                } //NE
-                if(direction==6)
-                {
-                    TousLespions[a].ligne=TousLespions[a].ligne+1;
-
-                } //SE
+    for (int a = 1; a < 61; a++) {
+        if (TousLesPions[a].nom == bledard && TousLesPions[a].ekip == ekip[0]) {
+            printf("nom:%c ekip:%i direction:%i\n",TousLesPions[a].nom,TousLesPions[a].ekip,direction);
+            // Lignes impaires
+            if (TousLesPions[a].ligne % 2 != 0 && temp == 0) {
+                // NO
+                if (direction == 1) {
+                    TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
+                    TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
+                }
+                // SO
+                if (direction == 5) {
+                    TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
+                    TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
+                }
+                // O
+                if (direction == 3) TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
+                // E
+                if (direction == 4) TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
+                // NE
+                if (direction == 2) TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
+                // SE
+                if (direction == 6) TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
+                temp = 1;
+            }
+            // Lignes paires
+            if (TousLesPions[a].ligne % 2 == 0 && temp == 0) {
+                // NO
+                if (direction == 1) TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
+                // SO
+                if (direction == 5) TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
+                // O
+                if (direction == 3) TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
+                // E
+                if (direction == 4) TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
+                // NE
+                if (direction == 2) {
+                    TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
+                    TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
+                }
+                // SE
+                if (direction == 6) {
+                    TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
+                    TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
+                }
                 temp=1;
             }
-            if(TousLespions[a].ligne%2==0 && temp ==0)
-               {
-                    if(direction==1) TousLespions[a].ligne=TousLespions[a].ligne-1;//NO
-                    if(direction==5)TousLespions[a].ligne=TousLespions[a].ligne+1;//SO
-                    if(direction==3)TousLespions[a].colonne=TousLespions[a].colonne-1;//O
-                    if(direction==4)TousLespions[a].colonne=TousLespions[a].colonne+1;//E
-                    if(direction==2)
-                    {
-                        TousLespions[a].ligne=TousLespions[a].ligne-1;
-                        TousLespions[a].colonne=TousLespions[a].colonne+1;
-                    } //NE
-                if(direction==6)
-                    {
-                    TousLespions[a].ligne=TousLespions[a].ligne+1;
-                    TousLespions[a].colonne=TousLespions[a].colonne+1;
-                    } //SE
-                temp=1;
-                }
         }
     }
 }
@@ -697,7 +620,7 @@ void choixdeplacement(char plateau[][14], pions TousLesPions[], int ekip[0]) {
     int direction=7,pionchoisi=10,cbon1=0,cbon2=0;
     int check[6], pionsjouable[10],a;
     char temp[6],bledard;
-    bledard=lavoiddubledard(bledard,pionchoisi);
+    bledard = lavoiddubledard(bledard, pionchoisi);
     verifdeplacement(TousLesPions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
     do
     {
@@ -770,19 +693,61 @@ void choixdeplacement(char plateau[][14], pions TousLesPions[], int ekip[0]) {
     deplacement(TousLesPions,plateau,bledard,direction,ekip);
 }
 
-void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[]) {
+void NomJoueurTour(int ekip[], joueurs j[]) {
+    // Affichage du nom du joueur qui joue le tour, juste avant la question de quel pion jouer
+    if (ekip[0] == 1) {
+        printf("\n%c vous de jouer, ", 183);
+        Couleur(2, 0);
+        printf("%s", j[1].nom);
+        Couleur(7, 0);
+    }
+    if (ekip[0] == 2) {
+        printf("\n%c vous de jouer, ", 183);
+        Couleur(14, 0);
+        printf("%s", j[2].nom);
+        Couleur(7, 0);
+    }
+    if (ekip[0] == 3) {
+        printf("\n%c vous de jouer, ", 183);
+        Couleur(9, 0);
+        printf("%s", j[3].nom);
+        Couleur(7, 0);
+    }
+    if (ekip[0] == 4) {
+        printf("\n%c vous de jouer, ", 183);
+        Couleur(12, 0);
+        printf("%s", j[4].nom);
+        Couleur(7, 0);
+    }
+    if (ekip[0] == 5) {
+        printf("\n%c vous de jouer, ", 183);
+        Couleur(6, 0);
+        printf("%s", j[5].nom);
+        Couleur(7, 0);
+    }
+    if (ekip[0] == 6) {
+        printf("\n%c vous de jouer, ", 183);
+        Couleur(13, 0);
+        printf("%s", j[6].nom);
+        Couleur(7, 0);
+    }
+}
+
+void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[], joueurs j[]) {
     int win = 0;
     do {
         ekip[0]++;
         if (ekip[0] > NBekip[0]) ekip[0] = 1;
         tickPlateau(plateau, TousLesPions, NBekip);
         affichagePlateau(plateau, TousLesPions);
+        NomJoueurTour(ekip, j);
+        // On joue le tour pour le n joueur
         choixdeplacement(plateau, TousLesPions, ekip);
-
     } while (win != 1);
+    // Implémenter fin de partie (gg)
 }
 
-void Creationsauvegarde(pions Touslespions[],int NBekip[])
+void Creationsauvegarde(pions Touslespions[],int NBekip[],joueurs j[],int ekip[])
 {
     FILE * sauvegarde; //sauvegarde est un pointer de fichier
     sauvegarde=fopen("Sauvegarde.txt","w");
@@ -792,11 +757,11 @@ void Creationsauvegarde(pions Touslespions[],int NBekip[])
         fprintf(sauvegarde,"%c %i %i %i\n",Touslespions[a].nom,Touslespions[a].ekip,Touslespions[a].ligne,Touslespions[a].colonne);
 
     }
-    fprintf(sauvegarde,"NBekip=%i\n",NBekip[0]);
+    fprintf(sauvegarde,"NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n",NBekip[0], ekip[0],j[1].nom, j[2].nom, j[3].nom, j[4].nom, j[5].nom, j[6].nom);
     fclose(sauvegarde);
 }
 
-void Liresauvegarde(pions Touslespions[], int NBekip[])
+void Liresauvegarde(pions Touslespions[], int NBekip[],joueurs j[],int ekip[])
 {
     FILE * sauvegarde=NULL;
     sauvegarde=fopen("Sauvegarde.txt","r");
@@ -805,9 +770,8 @@ void Liresauvegarde(pions Touslespions[], int NBekip[])
             for (a=1;a<61;a++)
         {
             fscanf(sauvegarde,"%c %i %i %i\n",&Touslespions[a].nom,&Touslespions[a].ekip,&Touslespions[a].ligne,&Touslespions[a].colonne);
-            printf("NOM:%c ekip:%i ligne:%i colonne:%i\n",Touslespions[a].nom,Touslespions[a].ekip,Touslespions[a].ligne,Touslespions[a].colonne);
         }
-        fscanf(sauvegarde,"NBekip=%i\n",&NBekip[0]);
+        fscanf(sauvegarde,"NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n",&NBekip[0], &ekip[0],&j[1].nom,&j[2].nom,&j[3].nom,&j[4].nom,&j[5].nom,&j[6].nom);
         fclose(sauvegarde);
 
 
@@ -817,8 +781,8 @@ int main() {
 	char plateau[17][14];
     pions TousLesPions[65];
     int NBekip[1], ekip[1], rep;
+    joueurs j[7]; // 7 au lieu de 6 car flemme de dire que j[0] vaut le joueur 1
     ekip[0] = 0;
-    joueurs j1, j2, j3, j4, j5, j6;
     // Menu
     initPions(TousLesPions);
     system("cls");
@@ -843,8 +807,7 @@ int main() {
                 NBekip[0] = AskJoueur();
                 break;
             case 2:
-            // Charger une ancienne partie (à implémenter, code de Matthieu)
-                Liresauvegarde(TousLesPions,NBekip);
+                Liresauvegarde(TousLesPions,NBekip,j,ekip);
                 //system("cls");
                 break;
             case 3:
@@ -855,6 +818,6 @@ int main() {
         }
     } while (rep < 1 || rep > 3);
     // Reste des fonctions
-    NomJoueur(NBekip, j1, j2, j3, j4, j5, j6);
-    boucleJeu(plateau, TousLesPions, NBekip, ekip);
+    NomJoueur(NBekip, j);
+    boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
 }

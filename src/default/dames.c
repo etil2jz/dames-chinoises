@@ -558,10 +558,10 @@ void verifdeplacement(pions TousLesPions[], char plateau[][14], int pionchoisi, 
 
 void deplacement(pions TousLesPions[], char plateau[][14], char bledard, int direction, int ekip[]) {
     int temp = 0; // temp sert à empêcher que la boucle se répète 2 fois
-    printf("bledard:%c, direction:%i\n",bledard,direction);
+    //printf("bledard:%c, direction:%i\n",bledard,direction);
     for (int a = 1; a < 61; a++) {
         if (TousLesPions[a].nom == bledard && TousLesPions[a].ekip == ekip[0]) {
-            printf("nom:%c ekip:%i direction:%i\n",TousLesPions[a].nom,TousLesPions[a].ekip,direction);
+            //printf("nom:%c ekip:%i direction:%i\n",TousLesPions[a].nom,TousLesPions[a].ekip,direction);
             // Lignes impaires
             if (TousLesPions[a].ligne % 2 != 0 && temp == 0) {
                 // NO
@@ -712,6 +712,23 @@ void NomJoueurTour(int ekip[], joueurs j[]) {
     }
 }
 
+int affectationVictoire(pions TousLesPions[]) {
+    int win, resultEkip1 = 0, resultEkip2 = 0;
+    // À voir pour simplifier le code au max, parce que c'est pas joli joli...
+    // Check si les pions de l'équipe 1 se trouvent dans la base de l'équipe 2
+    for (int ekip1 = 1; ekip1 < 11; ekip1++) {
+        if (TousLesPions[ekip1].ligne > 12 && TousLesPions[ekip1].ligne < 17 && TousLesPions[ekip1].colonne > 5 && TousLesPions[ekip1].colonne < 10) resultEkip1++;
+    }
+    if (resultEkip1 == 9) return 1; // 1 car Equipe 1
+    // Check si les pions de l'équipe 2 se trouvent dans la base de l'équipe 1
+    for (int ekip2 = 11; ekip2 < 21; ekip2++) {
+        if (TousLesPions[ekip2].ligne > -1 && TousLesPions[ekip2].ligne < 4 && TousLesPions[ekip2].colonne > 5 && TousLesPions[ekip2].colonne < 10) resultEkip2++;
+    }
+    if (resultEkip2 == 9) return 2; // 2 car Equipe 2
+    // Si toujours pas de victoire, on garde win = 0
+    return 0; 
+}
+
 void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[], joueurs j[]) {
     int win = 0, retourmenu = 0, swich;
     do {
@@ -720,7 +737,7 @@ void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[
         tickPlateau(plateau, TousLesPions, NBekip);
         affichagePlateau(plateau, TousLesPions);
         NomJoueurTour(ekip, j);
-        printf("\nAfficher menu ? : oui=1 non=0\n");
+        /*printf("\nAfficher menu ? : oui=1 non=0\n");
         scanf("%i", &swich);
         switch (swich) {
             case 0:
@@ -734,9 +751,16 @@ void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[
                 break;
         }
         // On joue le tour du n-ième joueur [si le joueur ne retourne pas au menu !!!]
-        if (retourmenu == 0) choixdeplacement(plateau, TousLesPions, ekip);
-    } while (win != 1 && retourmenu == 0);
+        if (retourmenu == 0) */choixdeplacement(plateau, TousLesPions, ekip);
+        win = affectationVictoire(TousLesPions);
+    } while (win == 0 && retourmenu == 0);
     // Implémenter fin de partie (gg)
+    if (win == 1) {
+        printf("\nF%clicitations au loulou de l'%cquipe 1 pour sa victoire %ccrasante !\n", 130, 130, 130);
+    }
+    if (win == 2) {
+        printf("\nF%clicitations au loulou de l'%cquipe 2 pour sa victoire %ccrasante !\n", 130, 130, 130);
+    }
 }
 
 void Creationsauvegarde(pions TousLesPions[], int NBekip[], joueurs j[], int ekip[]) {

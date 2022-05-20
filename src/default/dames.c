@@ -713,24 +713,24 @@ void NomJoueurTour(int ekip[], joueurs j[]) {
 }
 
 int affectationVictoire(pions TousLesPions[]) {
-    int win, resultEkip1 = 0, resultEkip2 = 0;
+    int NbrPionsEkip1 = 0, NbrPionsEkip2 = 0;
     // À voir pour simplifier le code au max, parce que c'est pas joli joli...
     // Check si les pions de l'équipe 1 se trouvent dans la base de l'équipe 2
     for (int ekip1 = 1; ekip1 < 11; ekip1++) {
-        if (TousLesPions[ekip1].ligne > 12 && TousLesPions[ekip1].ligne < 17 && TousLesPions[ekip1].colonne > 5 && TousLesPions[ekip1].colonne < 10) resultEkip1++;
+        if (TousLesPions[ekip1].ligne > 12 && TousLesPions[ekip1].ligne < 17 && TousLesPions[ekip1].colonne > 5 && TousLesPions[ekip1].colonne < 10) NbrPionsEkip1++;
     }
-    if (resultEkip1 == 9) return 1; // 1 car Equipe 1
+    if (NbrPionsEkip1 == 10) return 1; // 1 car Equipe 1
     // Check si les pions de l'équipe 2 se trouvent dans la base de l'équipe 1
     for (int ekip2 = 11; ekip2 < 21; ekip2++) {
-        if (TousLesPions[ekip2].ligne > -1 && TousLesPions[ekip2].ligne < 4 && TousLesPions[ekip2].colonne > 5 && TousLesPions[ekip2].colonne < 10) resultEkip2++;
+        if (TousLesPions[ekip2].ligne > -1 && TousLesPions[ekip2].ligne < 4 && TousLesPions[ekip2].colonne > 5 && TousLesPions[ekip2].colonne < 10) NbrPionsEkip2++;
     }
-    if (resultEkip2 == 9) return 2; // 2 car Equipe 2
+    if (NbrPionsEkip2 == 10) return 2; // 2 car Equipe 2
     // Si toujours pas de victoire, on garde win = 0
     return 0; 
 }
 
-void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[], joueurs j[]) {
-    int win = 0, retourmenu = 0, swich;
+void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[], joueurs j[], int EnCours[], int win[]) {
+    int retourmenu = 0, swich;
     do {
         ekip[0]++;
         if (ekip[0] > NBekip[0]) ekip[0] = 1;
@@ -752,13 +752,15 @@ void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[
         }
         // On joue le tour du n-ième joueur [si le joueur ne retourne pas au menu !!!]
         if (retourmenu == 0) */choixdeplacement(plateau, TousLesPions, ekip);
-        win = affectationVictoire(TousLesPions);
-    } while (win == 0 && retourmenu == 0);
+        win[0] = affectationVictoire(TousLesPions);
+    } while (win[0] == 0 && retourmenu == 0);
     // Implémenter fin de partie (gg)
-    if (win == 1) {
+    if (win[0] == 1) {
+        EnCours[0] = 0;
         printf("\nF%clicitations au loulou de l'%cquipe 1 pour sa victoire %ccrasante !\n", 130, 130, 130);
     }
-    if (win == 2) {
+    if (win[0] == 2) {
+        EnCours[0] = 0;
         printf("\nF%clicitations au loulou de l'%cquipe 2 pour sa victoire %ccrasante !\n", 130, 130, 130);
     }
 }
@@ -779,7 +781,7 @@ void Liresauvegarde(pions TousLesPions[], int NBekip[], joueurs j[], int ekip[])
     fclose(sauvegarde);
 }
 
-void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], int win, int EnCours[], int fin[], joueurs j[]) {
+void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], int win[], int EnCours[], int fin[], joueurs j[]) {
     int rep;
     do {
         printf("1. Nouvelle partie\n2. Charger une partie existante\n3. Quitter le jeu\n");
@@ -792,14 +794,14 @@ void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], in
                 system("cls");
                 NBekip[0] = AskJoueur();
                 NomJoueur(NBekip, j);
-                boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
                 EnCours[0] = 1;
+                boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
                 break;
             case 2:
                 // Charger une ancienne partie
                 Liresauvegarde(TousLesPions, NBekip, j, ekip);
-                boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
                 EnCours[0] = 1;
+                boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
                 //system("cls");
                 break;
             case 3:
@@ -812,22 +814,23 @@ void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], in
                 break;
             case 5:
                 // Continuer la partie
-                boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
+                boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
                 break;
             default:
                 system("cls");
                 printf("Erreur de saisie\n");
                 break;
-            }
-        } while (rep < 1 || rep > 5 );
+        }
+    } while ((rep < 1 || rep > 5) || (win[0] = 0) || (fin[0] = 0));
 }
 
 int main() {
 	char plateau[17][14];
     pions TousLesPions[65];
-    int NBekip[1], ekip[1], win = 0, fin[1], EnCours[1];
+    int NBekip[1], ekip[1], win[1], fin[1], EnCours[1];
     joueurs j[7]; // 7 au lieu de 6 car flemme de dire que j[0] vaut le joueur 1
     ekip[0] = 0;
+    win[0] = 0;
     // Menu
     system("cls");
     initPions(TousLesPions);
@@ -843,13 +846,13 @@ int main() {
     printf("\xBA\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
     Couleur(7, 0);
     do {
+        if (fin[0] == 1) return 0;
         if (EnCours[0] == 1) {
             system("cls");
             affichagePlateau(plateau, TousLesPions);
         }
         menu(NBekip, TousLesPions, plateau, ekip, win, EnCours, fin, j);
-    } while (win != 1 && fin[0] != 1);
-    // Reste des fonctions
-    NomJoueur(NBekip, j);
-    boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
+        NomJoueur(NBekip, j);
+        boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
+    } while ((win[0] == 0) && (fin[0] == 0));
 }

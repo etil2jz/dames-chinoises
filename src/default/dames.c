@@ -754,14 +754,28 @@ void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[
         if (retourmenu == 0) */choixdeplacement(plateau, TousLesPions, ekip);
         win[0] = affectationVictoire(TousLesPions);
     } while (win[0] == 0 && retourmenu == 0);
-    // Implémenter fin de partie (gg)
+    // On sort de la boucle car un joueur a gagné (on sait lequel car win prend la valeur de son équipe)
     if (win[0] == 1) {
+        system("cls");
+        tickPlateau(plateau, TousLesPions, NBekip);
+        affichagePlateau(plateau, TousLesPions);
         EnCours[0] = 0;
-        printf("\nF%clicitations au loulou de l'%cquipe 1 pour sa victoire %ccrasante !\n", 130, 130, 130);
+        printf("\nBravo ");
+        Couleur(2, 0);
+        printf("%s", j[1].nom);
+        Couleur(7, 0);
+        printf(" pour cette victoire %ccrasante !\n", 130);
     }
     if (win[0] == 2) {
+        system("cls");
+        tickPlateau(plateau, TousLesPions, NBekip);
+        affichagePlateau(plateau, TousLesPions);
         EnCours[0] = 0;
-        printf("\nF%clicitations au loulou de l'%cquipe 2 pour sa victoire %ccrasante !\n", 130, 130, 130);
+        printf("\nBravo ");
+        Couleur(14, 0);
+        printf("%s", j[2].nom);
+        Couleur(7, 0);
+        printf(" pour cette victoire %ccrasante !\n", 130);
     }
 }
 
@@ -774,14 +788,15 @@ void Creationsauvegarde(pions TousLesPions[], int NBekip[], joueurs j[], int eki
 }
 
 void Liresauvegarde(pions TousLesPions[], int NBekip[], joueurs j[], int ekip[]) {
-    FILE * sauvegarde = NULL;
+    FILE * sauvegarde = NULL; // sauvegarde est un pointeur de fichier
     sauvegarde = fopen("sauvegarde.esiee", "r");
+    if (sauvegarde == NULL) printf("\nAucune sauvegarde d%ctect%ce dans le dossier du jeu\nFermeture...", 130, 130);
     for (int a = 1; a < 61; a++) fscanf(sauvegarde, "%c %i %i %i\n", &TousLesPions[a].nom, &TousLesPions[a].ekip, &TousLesPions[a].ligne, &TousLesPions[a].colonne);
     fscanf(sauvegarde, "NBekip=%i tour=%i j1=%s j2=%s j3=%s j4=%s j5=%s j6=%s\n", &NBekip[0], &ekip[0], &j[1].nom, &j[2].nom, &j[3].nom, &j[4].nom, &j[5].nom, &j[6].nom);
     fclose(sauvegarde);
 }
 
-void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], int win[], int EnCours[], int fin[], joueurs j[]) {
+void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], int win[], int EnCours[], joueurs j[], int fermer[]) {
     int rep;
     do {
         printf("1. Nouvelle partie\n2. Charger une partie existante\n3. Quitter le jeu\n");
@@ -802,11 +817,10 @@ void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], in
                 Liresauvegarde(TousLesPions, NBekip, j, ekip);
                 EnCours[0] = 1;
                 boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
-                //system("cls");
                 break;
             case 3:
                 // Fermer le jeu
-                fin[0] = 1;
+                fermer[0] = 1;
                 break;
             case 4:
                 // Sauvegarder la partie en cours
@@ -821,16 +835,18 @@ void menu(int NBekip[], pions TousLesPions[], char plateau[][14], int ekip[], in
                 printf("Erreur de saisie\n");
                 break;
         }
-    } while ((rep < 1 || rep > 5) || (win[0] = 0) || (fin[0] = 0));
+        if (win[0] != 0 || fermer[0] != 0) break;
+    } while (rep < 1 || rep > 5);
 }
 
 int main() {
 	char plateau[17][14];
     pions TousLesPions[65];
-    int NBekip[1], ekip[1], win[1], fin[1], EnCours[1];
+    int NBekip[1], ekip[1], win[1], EnCours[1], fermer[1];
     joueurs j[7]; // 7 au lieu de 6 car flemme de dire que j[0] vaut le joueur 1
     ekip[0] = 0;
     win[0] = 0;
+    fermer[0] = 0;
     // Menu
     system("cls");
     initPions(TousLesPions);
@@ -846,13 +862,16 @@ int main() {
     printf("\xBA\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
     Couleur(7, 0);
     do {
-        if (fin[0] == 1) return 0;
         if (EnCours[0] == 1) {
             system("cls");
             affichagePlateau(plateau, TousLesPions);
         }
-        menu(NBekip, TousLesPions, plateau, ekip, win, EnCours, fin, j);
-        NomJoueur(NBekip, j);
-        boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
-    } while ((win[0] == 0) && (fin[0] == 0));
+        menu(NBekip, TousLesPions, plateau, ekip, win, EnCours, j, fermer);
+        if (fermer[0] == 0 && win[0] == 0) {
+            NomJoueur(NBekip, j);
+            boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
+        }
+    } while (win[0] == 0 && fermer[0] == 0);
+    //NomJoueur(NBekip, j);
+    //boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
 }

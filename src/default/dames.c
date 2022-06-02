@@ -872,6 +872,4 @@ int main() {
             boucleJeu(plateau, TousLesPions, NBekip, ekip, j, EnCours, win);
         }
     } while (win[0] == 0 && fermer[0] == 0);
-    //NomJoueur(NBekip, j);
-    //boucleJeu(plateau, TousLesPions, NBekip, ekip, j);
 }

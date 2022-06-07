@@ -447,8 +447,8 @@ void tickPlateau(char plateau[][14], pions TousLesPions[], int NBekip[]) {
     }
     for (int ligne = 0; ligne < 20; ligne++) {
         for (int colonne = 0; colonne < 20; colonne++) {
-            for (int a = 0; a < 64; a++) {
-                if (TousLesPions[a].ligne == ligne && TousLesPions[a].colonne == colonne && TousLesPions[a].ekip <= NBekip[0] && TousLesPions[a].ekip > 0) plateau[ligne][colonne] = TousLesPions[a].nom;
+            for (int i = 0; i < 64; i++) {
+                if (TousLesPions[i].ligne == ligne && TousLesPions[i].colonne == colonne && TousLesPions[i].ekip <= NBekip[0] && TousLesPions[i].ekip > 0) plateau[ligne][colonne] = TousLesPions[i].nom;
             }
         }
     }
@@ -505,173 +505,342 @@ char lavoiddubledard(char bledard, int pionchoisi) {
     if (pionchoisi == 10) bledard = 'n';
     return bledard;
 }
+ // façon encore plus miséreuse de transformer des charactères en integer
+int lalegendeduvagabond (char bledard)
+{
+    int vagabond;
+    if(bledard=='0')vagabond=0;
+    if(bledard=='1')vagabond=1;
+    if(bledard=='2')vagabond=2;
+    if(bledard=='3')vagabond=3;
+    if(bledard=='4')vagabond=4;
+    if(bledard=='5')vagabond=5;
+    if(bledard=='6')vagabond=6;
+    if(bledard=='7')vagabond=7;
+    if(bledard=='8')vagabond=8;
+    if(bledard=='9')vagabond=9;
+return vagabond;
+}
 
-// On vérifie les déplacements possibles autour du pion
-void verifdeplacement(pions TousLesPions[], char plateau[][14], int pionchoisi, int pionsjouable[], int check[], char bledard, int ekip[]) {
-    //check[0]-> NO | check[1]-> SO |check[2]-> O |check[3]-> E |check[4]-> NE |check[5]-> SE
-    int dplON = 0;
-    if (bledard == 'n') {
-        for(int a = 0; a < 10; a++) {
-            pionsjouable[a] = 0;
+
+void verifdeplacement(pions TousLespions[],char plateau[][14],int pionchoisi, int pionsjouable[],int check[][6],char bledard,int ekip[]) // rajouter equipe qui joue
+{
+    int a,b,c=0,num; //check[0]-> NE | check[1]-> SE |check[2]-> E |check[3]-> O |check[4]-> NO |check[5]-> SO
+    for(a=1;a<61;a++)
+    {
+        if((TousLespions[a].ekip==ekip[0] && TousLespions[a].nom == bledard) || (TousLespions[a].ekip == ekip[0] && bledard=='n' )) //strcmp?
+        {
+        num=lalegendeduvagabond(TousLespions[a].nom);
+        for(int c=0;c<6;c++){check[num][c]=0;}
+            if(TousLespions[a].ligne%2==0)
+            {
+                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne] == '.')check[num][0]=1; //NO
+                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne+1] == '.')check[num][1]=1; //SO
+                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne-1] == '.')check[num][2]=1; //O
+                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne+1] == '.')check[num][3]=1; //E
+                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne] == '.')check[num][4]=1; //NE
+                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne+1] == '.'){check[num][5]=1;} //SE
+            }
+            if(TousLespions[a].ligne%2!=0)
+            {
+                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne-1] == '.')check[num][0]=1; //NO
+                if(plateau[TousLespions[a].ligne-1][TousLespions[a].colonne] == '.')check[num][1]=1;//SO
+                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne-1] == '.')check[num][2]=1; //O
+                if(plateau[TousLespions[a].ligne][TousLespions[a].colonne+1] == '.')check[num][3]=1; //E
+                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne-1] == '.')check[num][4]=1; //NE
+                if(plateau[TousLespions[a].ligne+1][TousLespions[a].colonne] == '.')check[num][5]=1; //SE
+            }
+
+//                for(b=0;b<6;b++){printf("\ncheck[%i][%i]=%i",num,b,check[num][b]);}
+}
+
+}
+}
+
+verifdeplacement2 (pions TousLespions[],char plateau[][14],int pionchoisi, int pionsjouable[],int check[][6],char bledard,int ekip[])
+{
+
+    int dplON[6],b,C,D;
+    for(int a=0;a<10;a++){pionsjouable[a]=1;}
+    verifdeplacement(TousLespions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
+    if(bledard=='n')
+        {
+            for(b=0;b<10;b++){dplON[b]=0;}
+            for(C=0;C<10;C++){for(b=0;b<6;b++){if(check[C][b]==1) dplON[C]++;}}
+//            printf("\n check1[4]=%i  DPLon+%i\n",check[1][4],dplON[1]);
+            for(D=0;D<10;D++){if(dplON[D]==0) pionsjouable[D]=0;}
         }
-    }
-    for(int a = 1; a < 61; a++) {
-        dplON = 0;
-        if ((TousLesPions[a].ekip == ekip[0] && TousLesPions[a].nom == bledard) || (TousLesPions[a].ekip == ekip[0] && bledard == 'n')) {
-            for (int c = 0; c < 6; c++) {
-                check[c] = 0;
+}
+
+
+void deplacement(pions TousLespions[],char plateau[][14],char bledard,int direction,int ekip[])
+{
+    int a,temp=0; //temp sert à empecher que la boucle se répète 2 fois
+        for(a=1;a<61;a++)
+    {
+        if(TousLespions[a].nom == bledard && TousLespions[a].ekip== ekip[0])
+        {
+            if(TousLespions[a].ligne%2!=0 && temp==0)
+            {
+                if(direction==1)
+                {
+                    TousLespions[a].ligne=TousLespions[a].ligne-1;
+                    TousLespions[a].colonne=TousLespions[a].colonne-1;
+                };//NO
+                if(direction==5){
+                    TousLespions[a].ligne=TousLespions[a].ligne+1;
+                    TousLespions[a].colonne=TousLespions[a].colonne-1;
+                }//SO
+                if(direction==3)TousLespions[a].colonne=TousLespions[a].colonne-1;//O
+                if(direction==4)TousLespions[a].colonne=TousLespions[a].colonne+1;//E
+                if(direction==2)
+                {
+                    TousLespions[a].ligne=TousLespions[a].ligne-1;
+
+                } //NE
+                if(direction==6)
+                {
+                    TousLespions[a].ligne=TousLespions[a].ligne+1;
+
+                } //SE
+                temp=1;
             }
-            if (TousLesPions[a].ligne % 2 == 0) {
-                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne] == '.') check[0] = 1; //NO
-                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne] == '.') check[1] = 1; //SO
-                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne - 1] == '.') check[2] = 1; //O
-                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne + 1] == '.') check[3] = 1; //E
-                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne + 1] == '.') check[4] = 1; //NE
-                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne + 1] == '.') check[5] = 1; //SE
-            }
-            if (TousLesPions[a].ligne % 2 !=0) {
-                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne - 1] == '.') check[0] = 1; //NO
-                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne - 1] == '.') check[1] = 1;//SO
-                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne - 1] == '.') check[2] = 1; //O
-                if (plateau[TousLesPions[a].ligne][TousLesPions[a].colonne + 1] == '.') check[3] = 1; //E
-                if (plateau[TousLesPions[a].ligne - 1][TousLesPions[a].colonne] == '.') check[4] = 1; //NE
-                if (plateau[TousLesPions[a].ligne + 1][TousLesPions[a].colonne] == '.') check[5] = 1; //SE
-            }
-            if (bledard == 'n') {
-                for (int b = 0; b < 6; b++) {
-                    if (check[b] != 1) dplON++;
+            if(TousLespions[a].ligne%2==0 && temp ==0)
+               {
+                    if(direction==1) TousLespions[a].ligne=TousLespions[a].ligne-1;//NO
+                    if(direction==5)TousLespions[a].ligne=TousLespions[a].ligne+1;//SO
+                    if(direction==3)TousLespions[a].colonne=TousLespions[a].colonne-1;//O
+                    if(direction==4)TousLespions[a].colonne=TousLespions[a].colonne+1;//E
+                    if(direction==2)
+                    {
+                        TousLespions[a].ligne=TousLespions[a].ligne-1;
+                        TousLespions[a].colonne=TousLespions[a].colonne+1;
+                    } //NE
+                if(direction==6)
+                    {
+                    TousLespions[a].ligne=TousLespions[a].ligne+1;
+                    TousLespions[a].colonne=TousLespions[a].colonne+1;
+                    } //SE
+                temp=1;
                 }
-                if (dplON != 6 && TousLesPions[a].nom == '0') pionsjouable[0] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '1') pionsjouable[1] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '2') pionsjouable[2] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '3') pionsjouable[3] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '4') pionsjouable[4] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '5') pionsjouable[5] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '6') pionsjouable[6] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '7') pionsjouable[7] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '8') pionsjouable[8] = 1;
-                if (dplON != 6 && TousLesPions[a].nom == '9') pionsjouable[9] = 1;
-            }
         }
     }
 }
 
-void deplacement(pions TousLesPions[], char plateau[][14], char bledard, int direction, int ekip[]) {
-    int temp = 0; // temp sert à empêcher que la boucle se répète 2 fois
-    //printf("bledard:%c, direction:%i\n",bledard,direction);
-    for (int a = 1; a < 61; a++) {
-        if (TousLesPions[a].nom == bledard && TousLesPions[a].ekip == ekip[0]) {
-            //printf("nom:%c ekip:%i direction:%i\n",TousLesPions[a].nom,TousLesPions[a].ekip,direction);
-            // Lignes impaires
-            if (TousLesPions[a].ligne % 2 != 0 && temp == 0) {
-                // NO
-                if (direction == 1) {
-                    TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
-                    TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
-                }
-                // SO
-                if (direction == 5) {
-                    TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
-                    TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
-                }
-                // O
-                if (direction == 3) TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
-                // E
-                if (direction == 4) TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
-                // NE
-                if (direction == 2) TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
-                // SE
-                if (direction == 6) TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
-                temp = 1;
+void Saut (pions TousLespions[],char plateau[][14], char bledard, int ekip[],int check[][6],int checksaut[][6],int pionchoisi,int pionsjouable[]) // si pions -> check case derrière lui mm dir. Si vide alors saut dans dir = saut derrière pions, recommencer tant que possible
+{
+    int a,b,c,back[2],direction,vagabond; //back est une variable pour savegarder l'emplacement initial du pions back[0]=ligne et back[1]=colonne
+            for(a=0;a<6;a++)
+            {
+               checksaut[vagabond][a]=0;
             }
-            // Lignes paires
-            if (TousLesPions[a].ligne % 2 == 0 && temp == 0) {
-                // NO
-                if (direction == 1) TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
-                // SO
-                if (direction == 5) TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
-                // O
-                if (direction == 3) TousLesPions[a].colonne = TousLesPions[a].colonne - 1;
-                // E
-                if (direction == 4) TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
-                // NE
-                if (direction == 2) {
-                    TousLesPions[a].ligne = TousLesPions[a].ligne - 1;
-                    TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
-                }
-                // SE
-                if (direction == 6) {
-                    TousLesPions[a].ligne = TousLesPions[a].ligne + 1;
-                    TousLesPions[a].colonne = TousLesPions[a].colonne + 1;
-                }
-                temp = 1;
+            for(b=1;b<61;b++)
+            {
+
+                if((TousLespions[b].ekip==ekip[0] && TousLespions[b].nom == bledard) || (TousLespions[b].ekip == ekip[0] && bledard=='n' ))
+                    {
+                        vagabond=lalegendeduvagabond(TousLespions[b].nom);
+                        back[0]=TousLespions[b].ligne;
+                        back[1]=TousLespions[b].colonne;
+                        verifdeplacement(TousLespions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
+
+                        for(a=0;a<6;a++)
+                        {
+                            if(check[vagabond][a]== 0)
+                                {
+                                    direction= a+1;
+                                    deplacement(TousLespions,plateau,TousLespions[b].nom,direction,ekip);
+                                    if(TousLespions[b].ligne%2==0)
+                                    {
+                                        if(plateau[TousLespions[b].ligne-1][TousLespions[b].colonne] == '.' && a==0)checksaut[vagabond][0]=1; //NO
+                                        if(plateau[TousLespions[b].ligne-1][TousLespions[b].colonne+1] == '.' && a==1)checksaut[vagabond][1]=1; //SO
+                                        if(plateau[TousLespions[b].ligne][TousLespions[b].colonne-1] == '.' && a==2)checksaut[vagabond][2]=1; //O
+                                        if(plateau[TousLespions[b].ligne][TousLespions[b].colonne+1] == '.' && a==3)checksaut[vagabond][3]=1; //E
+                                        if(plateau[TousLespions[b].ligne+1][TousLespions[b].colonne] == '.' && a==4)checksaut[vagabond][4]=1; //NE
+                                        if(plateau[TousLespions[b].ligne+1][TousLespions[b].colonne+1] == '.' && a==5)checksaut[vagabond][5]=1; //SE
+                                    }
+                                    if(TousLespions[b].ligne%2!=0)
+                                    {
+                                        if(plateau[TousLespions[b].ligne-1][TousLespions[b].colonne-1] == '.' && a==0){checksaut[vagabond][0]=1;} //NO
+                                        if(plateau[TousLespions[b].ligne-1][TousLespions[b].colonne] == '.' && a==1){checksaut[vagabond][1]=1;}//SO
+                                        if(plateau[TousLespions[b].ligne][TousLespions[b].colonne-1] == '.' && a==2){checksaut[vagabond][2]=1;} //O
+                                        if(plateau[TousLespions[b].ligne][TousLespions[b].colonne+1] == '.' && a==3){checksaut[vagabond][3]=1;} //E
+                                        if(plateau[TousLespions[b].ligne+1][TousLespions[b].colonne-1] == '.' && a==4){checksaut[vagabond][4]=1;} //NE
+                                        if(plateau[TousLespions[b].ligne+1][TousLespions[b].colonne] == '.' && a==5){checksaut[vagabond][5]=1;} //SE
+                                    }
+                            }
+                            TousLespions[b].ligne=back[0];
+                            TousLespions[b].colonne=back[1];
+                        }
+                        for(a=0;a<6;a++){if(checksaut[vagabond][a]==1)pionsjouable[vagabond]=1;}
+                    }
             }
-        }
-    }
+
 }
 
-void choixdeplacement(char plateau[][14], pions TousLesPions[], int ekip[0]) {
-    int direction = 7, pionchoisi = 10, cbon1 = 0, cbon2 = 0, check[6], pionsjouable[10];
-    char temp[6], bledard;
-    bledard = lavoiddubledard(bledard, pionchoisi);
-    verifdeplacement(TousLesPions, plateau, pionchoisi, pionsjouable, check, bledard, ekip);
-    do {
-        do {
-            printf("\nQuel pion faut-il d%cplacer ? ", 130);
-            for (int a = 0; a < 10; a++) {
-                if (pionsjouable[a] == 1) printf("| %i ", a);
-            }
-            printf("|\n");
-            scanf("%i", &pionchoisi);
-            if (pionchoisi > 9 || pionchoisi < 0) printf("Erreur de saisie\n");
-            if (pionsjouable[pionchoisi] == 0) printf("Ce pion ne peut pas bouger\n");
-            if ((pionchoisi < 9 || pionchoisi > 0) && (pionsjouable[pionchoisi] == 1)) {
-                printf("Voulez-vous vraiment d%cplacer ce pion ? (1 pour continuer, 0 pour annuler)\n", 130);
-                scanf("%i", &cbon1);
-            }
-            else cbon1 = 1;
-        } while (cbon1 == 0);
-    } while (pionchoisi > 9 || pionchoisi < 0 || pionsjouable[pionchoisi] == 0);
-    bledard = lavoiddubledard(bledard, pionchoisi);
-    verifdeplacement(TousLesPions, plateau, pionchoisi, pionsjouable, check, bledard, ekip);
-    printf("Dans quelle direction voulez-vous jouer ?\n");
-    // Les checks servent à afficher les positions où le pion peut se déplacer
-    if (check[0] == 1) temp[0] = '1';
-    else temp[0] = ' ';
-    if (check[1] == 1) temp[1] = '5';
-    else temp[1] = ' ';
-    if (check[2] == 1) temp[2] = '3';
-    else temp[2] = ' ';
-    if (check[3] == 1) temp[3] = '4';
-    else temp[3] = ' ';
-    if (check[4] == 1) temp[4] = '2';
-    else temp[4] = ' ';
-    if (check[5] == 1) temp[5] = '6';
-    else temp[5] = ' ';
-    do {
-        printf("%c/ \\%c\n%c - %c\n%c\\ /%c\n=> ", temp[0], temp[4], temp[2], temp[3], temp[1], temp[5]);
-        scanf("%i", &direction);
-        if (direction < 1 || direction > 6) printf("Erreur de saisie\n");
-        else {
-            if (check[0] == 0 && direction == 1) printf("D%cplacement impossible\n", 130);
-            if (check[1] == 0 && direction == 5) printf("D%cplacement impossible\n", 130);
-            if (check[2] == 0 && direction == 3) printf("D%cplacement impossible\n", 130);
-            if (check[3] == 0 && direction == 4) printf("D%cplacement impossible\n", 130);
-            if (check[4] == 0 && direction == 2) printf("D%cplacement impossible\n", 130);
-            if (check[5] == 0 && direction == 6) printf("D%cplacement impossible\n", 130);
+void sautemouton(pions TousLesPions[],char plateau[][14], char bledard, int ekip[],int check[][6],int checksaut[][6],int pionchoisi,int pionsjouable[],int direction,int NBekip[])
+{
+    char temp[6];
+    int ON,cbon2,swith;
+    do{
+    deplacement(TousLesPions,plateau,bledard,direction,ekip);
+    tickPlateau(plateau,TousLesPions,NBekip);
+    deplacement(TousLesPions,plateau,bledard,direction,ekip);
+    tickPlateau(plateau,TousLesPions,NBekip);
+    affichagePlateau(plateau,TousLesPions);
+    for(int a=0;a<6;a++){checksaut[pionchoisi][a]=0;}
+    Saut(TousLesPions,plateau,bledard,ekip,check,checksaut,pionchoisi,pionsjouable);
+    ON=0;
+    if(direction==1)checksaut[pionchoisi][5]=0;
+    if(direction==2)checksaut[pionchoisi][4]=0;
+    if(direction==3)checksaut[pionchoisi][3]=0;
+    if(direction==4)checksaut[pionchoisi][2]=0;
+    if(direction==5)checksaut[pionchoisi][1]=0;
+    if(direction==6)checksaut[pionchoisi][0]=0;
+    for(int a=0;a<6;a++){if(checksaut[pionchoisi][a]==0)ON++;}
+    if(ON==6)cbon2==0;
+    else cbon2=2;
+    if(cbon2==2)
+    {
+        printf("\n Souhaitez vous continuer ?\n Oui:1 Non:0");
+        scanf("%i",&swith);
+        switch(swith)
+        {
+            case 0: cbon2=0;
+            break;
+            case 1: cbon2=2;
+            break;
+        }
+    }
+    if(cbon2==2)
+    {
+        printf("Dans quelle direction voulez-vous jouer ? \n");
+
+        if(checksaut[pionchoisi][0]==1) temp[0]='1';
+        else temp[0]=' ';
+        if(checksaut[pionchoisi][1]==1) temp[1]='2';
+        else temp[1]=' ';                       //en gros, ça sert a afficher les déplacements du pions possible.
+        if(checksaut[pionchoisi][2]==1) temp[2]='3';
+        else temp[2]=' ';
+        if(checksaut[pionchoisi][3]==1) temp[3]='4';
+        else temp[3]=' ';
+        if(checksaut[pionchoisi][4]==1) temp[4]='5';
+        else temp[4]=' ';
+        if(checksaut[pionchoisi][5]==1) temp[5]='6';
+        else temp[5]=' ';
+
+            printf("%c/ \\%c\n%c - %c\n%c\\ /%c\n=> ",temp[0],temp[1],temp[2],temp[3],temp[4],temp[5]);
+            scanf("%i",&direction);
+            if(1>direction || direction>6) printf("Erreur de saisie\n");
+            else
+            {
+            if(checksaut[pionchoisi][0]==0 && direction==1) printf("deplacement impossible\n");
+            if(checksaut[pionchoisi][1]==0 && direction==2) printf("deplacement impossible\n");
+            if(checksaut[pionchoisi][2]==0 && direction==3) printf("deplacement impossible\n");
+            if(checksaut[pionchoisi][3]==0 && direction==4) printf("deplacement impossible\n");
+            if(checksaut[pionchoisi][4]==0 && direction==5) printf("deplacement impossible\n");
+            if(checksaut[pionchoisi][5]==0 && direction==6) printf("deplacement impossible\n");
             //
-            if (check[0] == 1 && direction == 1) cbon2 = 1;
-            if (check[1] == 1 && direction == 5) cbon2 = 1;
-            if (check[2] == 1 && direction == 3) cbon2 = 1;
-            if (check[3] == 1 && direction == 4) cbon2 = 1;
-            if (check[4] == 1 && direction == 2) cbon2 = 1;
-            if (check[5] == 1 && direction == 6) cbon2 = 1;
-        }
-    } while (cbon2 == 0);
-    bledard = lavoiddubledard(bledard, pionchoisi);
-    deplacement(TousLesPions, plateau, bledard, direction, ekip);
+            if(checksaut[pionchoisi][0]==1 && direction==1) cbon2=2;
+            if(checksaut[pionchoisi][1]==1 && direction==2) cbon2=2;
+            if(checksaut[pionchoisi][2]==1 && direction==3) cbon2=2;
+            if(checksaut[pionchoisi][3]==1 && direction==4) cbon2=2;
+            if(checksaut[pionchoisi][4]==1 && direction==5) cbon2=2;
+            if(checksaut[pionchoisi][5]==1 && direction==6) cbon2=2;
+            }
+    }
+        }while(cbon2==2);
+
 }
 
+void choixdeplacement(char plateau[][14], pions TousLesPions[], int ekip[0], int NBekip[]) {
+    int direction=7,pionchoisi=10,cbon1=0,cbon2=0;
+    int check[10][6], pionsjouable[10],checksaut[10][6],a;
+    char temp[6],bledard='n',Retourmenu='n';
+    bledard=lavoiddubledard(bledard,pionchoisi);
+    verifdeplacement2 (TousLesPions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
+
+        printf("\nQuel pion voulez-vous jouer ?");
+    Saut(TousLesPions,plateau,bledard,ekip,check,checksaut,pionchoisi,pionsjouable);
+    do
+    {
+       do
+       {
+        for(a=0;a<10;a++)
+        {
+            if(pionsjouable[a]==1)
+            printf("|%i",a);
+        }
+        printf("\n");
+        fflush(stdin);
+        scanf("%i", &pionchoisi);
+        if(pionchoisi >9 || pionchoisi<0) printf("Erreur de saisie\n");
+        if(pionsjouable[pionchoisi]==0) printf("ce pion ne peut pas bouger\n");
+
+        if((pionchoisi <9 || pionchoisi>0 )&& pionsjouable[pionchoisi]==1)
+        {
+            printf("Voulez vous vraiment deplacer ce pion ? ? (0 pour annuler, 1 pour continuer)\n");
+            scanf("%i",&cbon1);
+        }
+        else cbon1=1;
+
+       }while(cbon1==0);
+    }while(pionchoisi>9||pionchoisi<0 || pionsjouable[pionchoisi]==0);
+        bledard=lavoiddubledard(bledard,pionchoisi);
+        verifdeplacement(TousLesPions,plateau,pionchoisi,pionsjouable,check,bledard,ekip);
+        Saut(TousLesPions,plateau,bledard,ekip,check,checksaut,pionchoisi,pionsjouable);
+        //affichagePlateau(plateau,TousLesPions);
+
+
+
+    printf("Dans quelle direction voulez-vous jouer ? \n");
+
+    if(check[pionchoisi][0]==1 || checksaut[pionchoisi][0]==1) temp[0]='1';
+    else temp[0]=' ';
+    if(check[pionchoisi][1]==1 || checksaut[pionchoisi][1]==1) temp[1]='2';
+    else temp[1]=' ';                       //en gros, ça sert a afficher les déplacements du pions possible.
+    if(check[pionchoisi][2]==1 || checksaut[pionchoisi][2]==1) temp[2]='3';
+    else temp[2]=' ';
+    if(check[pionchoisi][3]==1 || checksaut[pionchoisi][3]==1) temp[3]='4';
+    else temp[3]=' ';
+    if(check[pionchoisi][4]==1 || checksaut[pionchoisi][4]==1) temp[4]='5';
+    else temp[4]=' ';
+    if(check[pionchoisi][5]==1 || checksaut[pionchoisi][5]==1) temp[5]='6';
+    else temp[5]=' ';
+    do
+    {
+        printf("%c/ \\%c\n%c - %c\n%c\\ /%c\n=> ",temp[0],temp[1],temp[2],temp[3],temp[4],temp[5]);
+        scanf("%i",&direction);
+        if(1>direction || direction>6) printf("Erreur de saisie\n");
+        else
+        {
+        if(check[pionchoisi][0]==0 && checksaut[pionchoisi][0]==0 && direction==1) printf("deplacement impossible\n");
+        if(check[pionchoisi][1]==0 && checksaut[pionchoisi][1]==0 && direction==2) printf("deplacement impossible\n");
+        if(check[pionchoisi][2]==0 && checksaut[pionchoisi][2]==0 && direction==3) printf("deplacement impossible\n");
+        if(check[pionchoisi][3]==0 && checksaut[pionchoisi][3]==0 && direction==4) printf("deplacement impossible\n");
+        if(check[pionchoisi][4]==0 && checksaut[pionchoisi][4]==0 && direction==5) printf("deplacement impossible\n");
+        if(check[pionchoisi][5]==0 && checksaut[pionchoisi][5]==0 && direction==6) printf("deplacement impossible\n");
+        //
+        if(check[pionchoisi][0]==1 && direction==1) cbon2=1;
+        if(check[pionchoisi][1]==1 && direction==2) cbon2=1;
+        if(check[pionchoisi][2]==1 && direction==3) cbon2=1;
+        if(check[pionchoisi][3]==1 && direction==4) cbon2=1;
+        if(check[pionchoisi][4]==1 && direction==5) cbon2=1;
+        if(check[pionchoisi][5]==1 && direction==6) cbon2=1;
+        //
+        if(checksaut[pionchoisi][0]==1 && direction==1) cbon2=2;
+        if(checksaut[pionchoisi][1]==1 && direction==2) cbon2=2;
+        if(checksaut[pionchoisi][2]==1 && direction==3) cbon2=2;
+        if(checksaut[pionchoisi][3]==1 && direction==4) cbon2=2;
+        if(checksaut[pionchoisi][4]==1 && direction==5) cbon2=2;
+        if(checksaut[pionchoisi][5]==1 && direction==6) cbon2=2;
+        }
+    }
+    while(cbon2==0);
+    bledard=lavoiddubledard(bledard,pionchoisi);
+    if(cbon2==1)deplacement(TousLesPions,plateau,bledard,direction,ekip);
+    if(cbon2==2)sautemouton(TousLesPions,plateau,bledard,ekip,check,checksaut,pionchoisi,pionsjouable,direction,NBekip);
+}
 void NomJoueurTour(int ekip[], joueurs j[]) {
     // Affichage du nom du joueur qui joue le tour, juste avant la question de quel pion jouer
     if (ekip[0] == 1) {
@@ -713,7 +882,7 @@ void NomJoueurTour(int ekip[], joueurs j[]) {
 }
 
 int affectationVictoire(pions TousLesPions[]) {
-    int NbrPionsEkip1 = 0, NbrPionsEkip2 = 0;
+    int NbrPionsEkip1 = 0, NbrPionsEkip2 = 0, NbrPionsEkip3 = 0, NbrPionsEkip4 = 0, NbrPionsEkip5 = 0, NbrPionsEkip6 = 0;
     // À voir pour simplifier le code au max, parce que c'est pas joli joli...
     // Check si les pions de l'équipe 1 se trouvent dans la base de l'équipe 2
     for (int ekip1 = 1; ekip1 < 11; ekip1++) {
@@ -725,8 +894,28 @@ int affectationVictoire(pions TousLesPions[]) {
         if (TousLesPions[ekip2].ligne > -1 && TousLesPions[ekip2].ligne < 4 && TousLesPions[ekip2].colonne > 5 && TousLesPions[ekip2].colonne < 10) NbrPionsEkip2++;
     }
     if (NbrPionsEkip2 == 10) return 2; // 2 car Equipe 2
+    // Check si les pions de l'équipe 3 se trouvent dans la base de l'équipe 4
+    for (int ekip3 = 21; ekip3 < 31; ekip3++) {
+        if (TousLesPions[ekip3].ligne > 8 && TousLesPions[ekip3].ligne < 13 && TousLesPions[ekip3].colonne > 0 && TousLesPions[ekip3].colonne < 5) NbrPionsEkip3++;
+    }
+    if (NbrPionsEkip3 == 10) return 3; // 3 car Equipe 3
+    // Check si les pions de l'équipe 4 se trouvent dans la base de l'équipe 3
+    for (int ekip4 = 31; ekip4 < 41; ekip4++) {
+        if (TousLesPions[ekip4].ligne > 3 && TousLesPions[ekip4].ligne < 8 && TousLesPions[ekip4].colonne > 9 && TousLesPions[ekip4].colonne < 14) NbrPionsEkip4++;
+    }
+    if (NbrPionsEkip4 == 10) return 4; // 4 car Equipe 4
+    // Check si les pions de l'équipe 5 se trouvent dans la base de l'équipe 6
+    for (int ekip5 = 41; ekip5 < 51; ekip5++) {
+        if (TousLesPions[ekip5].ligne > 8 && TousLesPions[ekip5].ligne < 13 && TousLesPions[ekip5].colonne > 9 && TousLesPions[ekip5].colonne < 14) NbrPionsEkip5++;
+    }
+    if (NbrPionsEkip5 == 10) return 5; // 5 car Equipe 5
+    // Check si les pions de l'équipe 6 se trouvent dans la base de l'équipe 5
+    for (int ekip6 = 51; ekip6 < 61; ekip6++) {
+        if (TousLesPions[ekip6].ligne > 3 && TousLesPions[ekip6].ligne < 8 && TousLesPions[ekip6].colonne > 0 && TousLesPions[ekip6].colonne < 5) NbrPionsEkip6++;
+    }
+    if (NbrPionsEkip6 == 10) return 6; // 6 car Equipe 6
     // Si toujours pas de victoire, on garde win = 0
-    return 0; 
+    return 0;
 }
 
 void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[], joueurs j[], int EnCours[], int win[]) {
@@ -751,10 +940,11 @@ void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[
                 break;
         }
         // On joue le tour du n-ième joueur [si le joueur ne retourne pas au menu !!!]
-        if (retourmenu == 0) */choixdeplacement(plateau, TousLesPions, ekip);
+        if (retourmenu == 0) */choixdeplacement(plateau, TousLesPions, ekip,NBekip);
         win[0] = affectationVictoire(TousLesPions);
     } while (win[0] == 0 && retourmenu == 0);
     // On sort de la boucle car un joueur a gagné (on sait lequel car win prend la valeur de son équipe)
+    // TO-DO : FAIRE UNE BOUCLE FOR POUR TOUTES LES WIN AVEC DES CONDITIONS IF WIN = ... POUR LES COULEURS RESPECTIVES
     if (win[0] == 1) {
         system("cls");
         tickPlateau(plateau, TousLesPions, NBekip);
@@ -774,6 +964,50 @@ void boucleJeu(char plateau[][14], pions TousLesPions[], int NBekip[], int ekip[
         printf("\nBravo ");
         Couleur(14, 0);
         printf("%s", j[2].nom);
+        Couleur(7, 0);
+        printf(" pour cette victoire %ccrasante !\n", 130);
+    }
+    if (win[0] == 3) {
+        system("cls");
+        tickPlateau(plateau, TousLesPions, NBekip);
+        affichagePlateau(plateau, TousLesPions);
+        EnCours[0] = 0;
+        printf("\nBravo ");
+        Couleur(2, 0);
+        printf("%s", j[1].nom);
+        Couleur(7, 0);
+        printf(" pour cette victoire %ccrasante !\n", 130);
+    }
+    if (win[0] == 4) {
+        system("cls");
+        tickPlateau(plateau, TousLesPions, NBekip);
+        affichagePlateau(plateau, TousLesPions);
+        EnCours[0] = 0;
+        printf("\nBravo ");
+        Couleur(2, 0);
+        printf("%s", j[1].nom);
+        Couleur(7, 0);
+        printf(" pour cette victoire %ccrasante !\n", 130);
+    }
+    if (win[0] == 5) {
+        system("cls");
+        tickPlateau(plateau, TousLesPions, NBekip);
+        affichagePlateau(plateau, TousLesPions);
+        EnCours[0] = 0;
+        printf("\nBravo ");
+        Couleur(2, 0);
+        printf("%s", j[1].nom);
+        Couleur(7, 0);
+        printf(" pour cette victoire %ccrasante !\n", 130);
+    }
+    if (win[0] == 6) {
+        system("cls");
+        tickPlateau(plateau, TousLesPions, NBekip);
+        affichagePlateau(plateau, TousLesPions);
+        EnCours[0] = 0;
+        printf("\nBravo ");
+        Couleur(2, 0);
+        printf("%s", j[1].nom);
         Couleur(7, 0);
         printf(" pour cette victoire %ccrasante !\n", 130);
     }
